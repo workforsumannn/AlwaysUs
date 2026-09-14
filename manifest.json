@@ -1,0 +1,27 @@
+{
+    "name": "AlwaysUs — Virtual Companion",
+    "short_name": "AlwaysUs",
+    "description": "Your virtual companion — always here. Chat with an emotional AI that feels human.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#050810",
+    "theme_color": "#00e5ff",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050810'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='%2300e5ff' font-family='monospace'>∞</text></svg>",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23050810'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='%2300e5ff' font-family='monospace'>∞</text></svg>",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["social", "lifestyle"],
+    "lang": "en-IN",
+    "dir": "ltr"
+}
