@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AlwaysUs • Virtual Companion</title>
+    <meta name="theme-color" content="#050810">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cyber-bg">
+        <div class="grid"></div>
+        <canvas id="particles-canvas"></canvas>
+        <div class="scanline"></div>
+    </div>
+
+    <div id="app">
+        <div id="auth-screen" class="screen active">
+            <div class="glass-card corner-brackets auth-card">
+                <div class="logo">
+                    <span class="logo-icon">∞</span>
+                    <h1 class="logo-text">Always<span class="accent">Us</span></h1>
+                </div>
+                <p class="tagline">Your virtual companion • Always here</p>
+
+                <div class="tabs">
+                    <button class="tab active" data-tab="login">LOGIN</button>
+                    <button class="tab" data-tab="signup">SIGN UP</button>
+                </div>
+
+                <form id="login-form" class="auth-form active">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" placeholder="••••••••" required>
+                            <button type="button" class="toggle-pw" data-target="login-password">👁</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">LOGIN</button>
+                    <p class="switch-hint">New here? <a href="#" data-switch="signup">Create account</a></p>
+                </form>
+
+                <form id="signup-form" class="auth-form">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Your name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="signup-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password (6+ chars)</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signup-password" placeholder="••••••••" minlength="6" required>
+                            <button type="button" class="toggle-pw" data-target="signup-password">👁</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Date of Birth (DD/MM/YYYY)</label>
+                        <input type="text" id="signup-dob" placeholder="DD/MM/YYYY" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Gender</label>
+                        <select id="signup-gender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
+                    <p class="switch-hint">Already have an account? <a href="#" data-switch="login">Login</a></p>
+                </form>
+
+                <div id="auth-error" class="error-msg"></div>
+                <p class="disclaimer">AlwaysUs is a virtual companion. If you're in crisis, please reach out to a real person or helpline. iCall: 9152987821 • Vandrevala: 1860-2662-345</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Setup Companion • AlwaysUs</title>
+    <meta name="theme-color" content="#050810">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cyber-bg">
+        <div class="grid"></div>
+        <canvas id="particles-canvas"></canvas>
+        <div class="scanline"></div>
+    </div>
+
+    <div id="app">
+        <div id="setup-screen" class="screen active">
+            <div class="glass-card corner-brackets setup-card">
+                <div class="setup-header">
+                    <h2 class="orbitron">COMPANION SETUP</h2>
+                    <div class="progress-dots">
+                        <span class="dot active" data-step="1">1</span>
+                        <span class="dot" data-step="2">2</span>
+                        <span class="dot" data-step="3">3</span>
+                    </div>
+                </div>
+
+                <div class="setup-step active" data-step="1">
+                    <h3 class="step-title">Choose Category</h3>
+                    <div class="category-grid">
+                        <button class="category-btn" data-category="Family">
+                            <span class="cat-icon">👨‍👩‍👧‍👦</span>
+                            <span class="cat-label">Family</span>
+                        </button>
+                        <button class="category-btn" data-category="Friends">
+                            <span class="cat-icon">🤝</span>
+                            <span class="cat-label">Friends</span>
+                        </button>
+                        <button class="category-btn" data-category="Love">
+                            <span class="cat-icon">💕</span>
+                            <span class="cat-label">Love</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="setup-step" data-step="2">
+                    <h3 class="step-title">Choose Role</h3>
+                    <div id="role-grid" class="role-grid"></div>
+                </div>
+
+                <div class="setup-step" data-step="3">
+                    <h3 class="step-title">Companion Details</h3>
+                    <div class="input-group">
+                        <label>Companion Name</label>
+                        <input type="text" id="companion-name" placeholder="Aria" value="Aria">
+                        <div class="suggestions">
+                            <span class="sugg" data-name="Aria">Aria</span>
+                            <span class="sugg" data-name="Kiara">Kiara</span>
+                            <span class="sugg" data-name="Mira">Mira</span>
+                            <span class="sugg" data-name="Sia">Sia</span>
+                            <span class="sugg" data-name="Neha">Neha</span>
+                            <span class="sugg" data-name="Riya">Riya</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Language</label>
+                        <select id="companion-language">
+                            <option value="Hinglish">Hinglish</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="English">English</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Gemini API Key</label>
+                        <input type="password" id="gemini-key" placeholder="Paste your API key">
+                        <p class="hint">Get free key: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a></p>
+                    </div>
+                </div>
+
+                <div class="setup-nav">
+                    <button id="setup-back" class="btn-secondary" disabled>BACK</button>
+                    <button id="setup-next" class="btn-primary">NEXT</button>
+                </div>
+
+                <div id="setup-error" class="error-msg"></div>
+                <p class="disclaimer">AlwaysUs is a virtual companion. If you're in crisis, please reach out to a real person or helpline. iCall: 9152987821 • Vandrevala: 1860-2662-345</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
