@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0510">
+<title>AlwaysUs — Setup</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+<div class="bg-hearts" id="bgHearts"></div>
+
+<div class="wrap setup-wrap">
+  <div class="card setup-card">
+
+    <div class="head">
+      <h1>Setup Your <span>Companion</span></h1>
+      <p>HAMESHA SAATH · HAMESHA APNA</p>
+    </div>
+
+    <div class="divider">
+      <span></span><span class="dot"></span><span></span>
+    </div>
+
+    <!-- STEP 1: CATEGORY -->
+    <div class="setup-step active" id="step1">
+      <div class="step-title">
+        <span class="step-num">01</span>
+        <span>Kaun Ban-na Chahte Ho?</span>
+      </div>
+
+      <div class="category-grid">
+        <div class="category-card" data-cat="family" onclick="chooseCategory('family')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Family</span>
+        </div>
+        <div class="category-card" data-cat="friends" onclick="chooseCategory('friends')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Friends</span>
+        </div>
+        <div class="category-card" data-cat="love" onclick="chooseCategory('love')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/>
+          </svg>
+          <span>Love</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: ROLE -->
+    <div class="setup-step" id="step2">
+      <div class="step-title">
+        <span class="step-num">02</span>
+        <span>Role Choose Karo</span>
+      </div>
+      <div class="role-grid" id="roleGrid"></div>
+    </div>
+
+    <!-- STEP 3: AI INFO -->
+    <div class="setup-step" id="step3">
+      <div class="step-title">
+        <span class="step-num">03</span>
+        <span>Apne Saathi Ka Naam</span>
+      </div>
+
+      <div class="field">
+        <label>Naam</label>
+        <input type="text" id="aiName" placeholder="Aria" value="Aria" maxlength="15"/>
+      </div>
+
+      <div class="name-suggestions">
+        <span onclick="setName('Aria')">Aria</span>
+        <span onclick="setName('Kiara')">Kiara</span>
+        <span onclick="setName('Mira')">Mira</span>
+        <span onclick="setName('Sia')">Sia</span>
+        <span onclick="setName('Neha')">Neha</span>
+        <span onclick="setName('Riya')">Riya</span>
+      </div>
+
+      <div class="field">
+        <label>Language</label>
+        <select id="aiLang">
+          <option value="hinglish" selected>Hinglish</option>
+          <option value="hindi">Hindi</option>
+          <option value="english">English</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Gemini API Key</label>
+        <input type="password" id="apiKey" placeholder="aistudio.google.com se lo"/>
+        <div class="api-help">
+          <a href="https://aistudio.google.com/app/apikey" target="_blank">→ Free API key yahan se lo</a>
+        </div>
+      </div>
+
+      <button class="btn-main" onclick="finishSetup()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>START CHAT</span>
+        <span class="scan"></span>
+      </button>
+    </div>
+
+    <div class="setup-progress">
+      <div class="prog-dot active" id="pd1"></div>
+      <div class="prog-dot" id="pd2"></div>
+      <div class="prog-dot" id="pd3"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+initHearts();
+
+const SESSION_KEY = 'au_session';
+const COMPANION_KEY = 'au_companion';
+
+const ROLES = {
+  family: [
+    { id: 'maa', name: 'Maa', icon: '👩', desc: 'Pyaar, care' },
+    { id: 'papa', name: 'Papa', icon: '👨', desc: 'Strong, protect' },
+    { id: 'bhai', name: 'Bhai', icon: '👦', desc: 'Protect, mazaak' },
+    { id: 'behen', name: 'Behen', icon: '👧', desc: 'Nok-jhok, care' },
+    { id: 'dada', name: 'Dada', icon: '👴', desc: 'Kahaniyan' },
+    { id: 'dadi', name: 'Dadi', icon: '👵', desc: 'Pyaar, mithai' },
+    { id: 'nana', name: 'Nana', icon: '👴', desc: 'Wisdom' },
+    { id: 'nani', name: 'Nani', icon: '👵', desc: 'Pyaar, khana' },
+    { id: 'chacha', name: 'Chacha', icon: '👨', desc: 'Mazaak' },
+    { id: 'chachi', name: 'Chachi', icon: '👩', desc: 'Gossip' },
+    { id: 'mama', name: 'Mama', icon: '👨', desc: 'Support' },
+    { id: 'mami', name: 'Mami', icon: '👩', desc: 'Care' },
+    { id: 'cousin_bhai', name: 'Cousin Bhai', icon: '🧑', desc: 'Partner in crime' },
+    { id: 'cousin_behen', name: 'Cousin Behen', icon: '👧', desc: 'Gossip' }
+  ],
+  friends: [
+    { id: 'bestie', name: 'Bestie', icon: '👭', desc: 'Gossip, secrets' },
+    { id: 'bestu', name: 'Bestu', icon: '👬', desc: 'Mazaak, chill' },
+    { id: 'dost', name: 'Dost', icon: '🧑', desc: 'Masti, support' },
+    { id: 'close_friend', name: 'Close Friend', icon: '🧑', desc: 'Dil ki baat' },
+    { id: 'school_friend', name: 'School Friend', icon: '🧑', desc: 'Purani yaadein' },
+    { id: 'college_friend', name: 'College Friend', icon: '🧑', desc: 'Masti, padhai' },
+    { id: 'childhood_friend', name: 'Childhood Friend', icon: '🧑', desc: 'Bachpan' },
+    { id: 'gym_buddy', name: 'Gym Buddy', icon: '💪', desc: 'Fitness' }
+  ],
+  love: [
+    { id: 'gf', name: 'GF', icon: '💕', desc: 'Romantic' },
+    { id: 'bf', name: 'BF', icon: '💙', desc: 'Romantic' },
+    { id: 'wife', name: 'Wife', icon: '👰', desc: 'Pyaar, partner' },
+    { id: 'husband', name: 'Husband', icon: '🤵', desc: 'Protect, love' },
+    { id: 'fiance', name: 'Fiancé', icon: '💍', desc: 'Romantic' },
+    { id: 'fiancee', name: 'Fiancée', icon: '💍', desc: 'Romantic' },
+    { id: 'crush', name: 'Crush', icon: '💖', desc: 'Shy, flirty' },
+    { id: 'ex', name: 'Ex', icon: '💔', desc: 'Mixed' }
+  ]
+};
+
+let selectedCategory = null;
+let selectedRole = null;
+
+function chooseCategory(cat) {
+  selectedCategory = cat;
+  document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.category-card[data-cat="' + cat + '"]').classList.add('active');
+  setTimeout(() => {
+    showStep(2);
+    renderRoles(cat);
+  }, 300);
+}
+
+function renderRoles(cat) {
+  const grid = document.getElementById('roleGrid');
+  grid.innerHTML = '';
+  ROLES[cat].forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'role-card';
+    div.innerHTML = '<div class="role-icon">' + r.icon + '</div><div class="role-name">' + r.name + '</div><div class="role-desc">' + r.desc + '</div>';
+    div.onclick = () => chooseRole(r);
+    grid.appendChild(div);
+  });
+}
+
+function chooseRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  setTimeout(() => showStep(3), 300);
+}
+
+function showStep(n) {
+  document.querySelectorAll('.setup-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.querySelectorAll('.prog-dot').forEach((d, i) => {
+    d.classList.toggle('active', i < n);
+  });
+}
+
+function setName(n) {
+  document.getElementById('aiName').value = n;
+}
+
+function finishSetup() {
+  const name = document.getElementById('aiName').value.trim() || 'Aria';
+  const lang = document.getElementById('aiLang').value;
+  const apiKey = document.getElementById('apiKey').value.trim();
+
+  if (!apiKey) {
+    alert('Please enter Gemini API key');
+    return;
+  }
+
+  const companion = {
+    name,
+    role: selectedRole,
+    category: selectedCategory,
+    language: lang,
+    apiKey,
+    createdAt: Date.now(),
+  };
+
+  localStorage.setItem(COMPANION_KEY, JSON.stringify(companion));
+  window.location.href = 'chat.html';
+}
+
+(function init() {
+  const session = localStorage.getItem(SESSION_KEY);
+  if (!session) { window.location.replace('index.html'); return; }
+  const companion = localStorage.getItem(COMPANION_KEY);
+  if (companion) {
+    try {
+      const c = JSON.parse(companion);
+      if (c && c.role) {
+        window.location.replace('chat.html');
+      }
+    } catch(_) {}
+  }
+})();
+</script>
+</body>
+</html>
