@@ -6,7 +6,7 @@ const KEYS = {
     LAST_MSG: 'au_last_msg'
 };
 
-const DEFAULT_API_KEY = 'AQ.Ab8RN6KMSaycOmbkncVhoXTLQRO7MFVD5FOIUGlO-Gll3yk00Q';
+const DEFAULT_API_KEY = 'AQ.Ab8RN6JAAdWVJ4YSKXIWy7a1ZeQ0fUyNoF6j1msEkoudZDaLEQ';
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -461,7 +461,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
     }
 
     async function callGemini(history, userMessage, imageData = null) {
-        const apiKey = companion.apiKey || 'AQ.Ab8RN6KMSaycOmbkncVhoXTLQRO7MFVD5FOIUGlO-Gll3yk00Q';
+        const apiKey = companion.apiKey || DEFAULT_API_KEY;
 
         const systemPrompt = buildSystemPrompt();
         const contents = [];
