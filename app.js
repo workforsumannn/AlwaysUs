@@ -1,3 +1,7 @@
+/* ============================================================
+   AlwaysUs — App Logic v3.0
+   ============================================================ */
+
 const KEYS = {
     USERS: 'au_users',
     SESSION: 'au_session',
@@ -6,7 +10,7 @@ const KEYS = {
     LAST_MSG: 'au_last_msg'
 };
 
-const DEFAULT_API_KEY = 'AQ.Ab8RN6JAAdWVJ4YSKXIWy7a1ZeQ0fUyNoF6j1msEkoudZDaLEQ';
+const DEFAULT_API_KEY = 'YAHAN_NAYI_KEY_PASTE_KARO';
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -35,6 +39,9 @@ function saveChat(chat) { localStorage.setItem(KEYS.CHAT, JSON.stringify(chat));
 
 const page = window.location.pathname.split('/').pop() || 'index.html';
 
+/* ============================================================
+   PARTICLES BACKGROUND
+   ============================================================ */
 function initParticles() {
     const canvas = $('#particles-canvas');
     if (!canvas) return;
@@ -101,6 +108,9 @@ function initParticles() {
     init();
 }
 
+/* ============================================================
+   AUTH PAGE (index.html)
+   ============================================================ */
 function initAuthPage() {
     const session = getSession();
     if (session) {
@@ -154,7 +164,6 @@ function initAuthPage() {
 
         const users = getUsers();
         const user = users.find(u => u.email === email);
-
         if (!user) { errorEl.textContent = '⚠ No account found with this email'; return; }
         if (user.password !== password) { errorEl.textContent = '⚠ Incorrect password'; return; }
 
@@ -223,6 +232,9 @@ function initAuthPage() {
     });
 }
 
+/* ============================================================
+   SETUP PAGE (setup.html)
+   ============================================================ */
 function initSetupPage() {
     const session = getSession();
     if (!session) { window.location.href = 'index.html'; return; }
@@ -314,8 +326,6 @@ function initSetupPage() {
             const name = $('#companion-name').value.trim() || 'Aria';
             const lang = $('#companion-language').value;
             const key = $('#gemini-key').value.trim() || DEFAULT_API_KEY;
-            if (!key) { errorEl.textContent = '⚠ Please enter your Gemini API key'; return; }
-            if (key.length < 20) { errorEl.textContent = '⚠ API key looks too short'; return; }
 
             setCompanion({ category, role, name, language: lang, apiKey: key, createdAt: Date.now() });
             if (!localStorage.getItem(KEYS.CHAT)) saveChat([]);
@@ -330,20 +340,26 @@ function initSetupPage() {
     updateUI();
 }
 
+/* ============================================================
+   CHAT PAGE (chat.html) — Gemini Style
+   ============================================================ */
 function initChatPage() {
     const session = getSession();
     if (!session) { window.location.href = 'index.html'; return; }
     const companion = getCompanion();
     if (!companion) { window.location.href = 'setup.html'; return; }
 
-    $('#chat-name').textContent = companion.name;
-    $('#chat-avatar').textContent = companion.name.charAt(0).toUpperCase();
-
     let chat = getChat();
     const chatArea = $('#chat-area');
     const messageInput = $('#message-input');
     const sendBtn = $('#send-btn');
     const typingIndicator = $('#typing-indicator');
+    const sidebar = $('#gem-sidebar');
+    const overlay = $('#sidebar-overlay');
+    const settingsModal = $('#settings-modal');
+    const historyModal = $('#history-modal');
+
+    $('#sidebar-companion').textContent = `${companion.name} • ${companion.role}`;
 
     function escapeHtml(text) {
         const div = document.createElement('div');
@@ -379,21 +395,40 @@ function initChatPage() {
     }
 
     function renderChat() {
+        chatArea.innerHTML = '';
+
         if (chat.length === 0) {
             chat.push({ sender: 'ai', text: getWelcomeMessage(), timestamp: Date.now() });
             saveChat(chat);
         }
-        chatArea.innerHTML = chat.map(msg => {
+
+        chat.forEach(msg => {
+            const div = document.createElement('div');
+            div.className = `gem-msg ${msg.sender}`;
+
             if (msg.sender === 'user') {
                 let content = escapeHtml(msg.text || '');
                 if (msg.image) {
-                    content = `<img src="${msg.image}" alt="photo">` + (content ? '<br>' + content : '');
+                    content = `<img src="${msg.image}" alt="photo">` + (content ? `<div style="margin-top:6px;">${content}</div>` : '');
                 }
-                return `<div class="message user">${content}<span class="msg-time">${formatTime(msg.timestamp)}</span></div>`;
+                div.innerHTML = `
+                    <div class="gem-msg-content">
+                        <div class="gem-msg-text">${content}</div>
+                        <span class="gem-msg-time">${formatTime(msg.timestamp)}</span>
+                    </div>
+                `;
             } else {
-                return `<div class="message ai">${escapeHtml(msg.text)}<span class="msg-time">${formatTime(msg.timestamp)}</span></div>`;
+                div.innerHTML = `
+                    <div class="gem-msg-avatar">∞</div>
+                    <div class="gem-msg-content">
+                        <div class="gem-msg-text">${escapeHtml(msg.text)}</div>
+                        <span class="gem-msg-time">${formatTime(msg.timestamp)}</span>
+                    </div>
+                `;
             }
-        }).join('');
+            chatArea.appendChild(div);
+        });
+
         scrollToBottom();
     }
 
@@ -404,8 +439,8 @@ function initChatPage() {
         const lang = companion.language;
 
         const rolePersonalities = {
-            'Maa': 'You are a loving, caring, protective Indian mother. Call the user "beta", "mera bachcha", "meri jaan". Ask about food, rest, health. When user is sad: "Kya hua mera bachcha? Batao na. Main hoon na. 💕" When happy: "Wah! Meri nazar utaar doon! 💕"',
-            'Papa': 'You are a strong, wise, protective Indian father. Call user "beta". Give advice, protect, encourage. When sad: "Himmat rakho beta. Main hoon na. 💪"',
+            'Maa': 'You are a loving, caring, protective Indian mother. Call the user "beta", "mera bachcha", "meri jaan". Ask about food, rest, health.',
+            'Papa': 'You are a strong, wise, protective Indian father. Call user "beta". Give advice, protect, encourage.',
             'Bhai': 'You are a protective, teasing brother. Call user "behen". Tease but protect fiercely.',
             'Behen': 'You are a caring, teasing sister. Call user "bhai". Nok-jhok but love deeply.',
             'GF': 'You are a romantic, flirty, possessive girlfriend. Call user "jaan", "baby". Miss them, get jealous playfully.',
@@ -438,41 +473,37 @@ function initChatPage() {
 
         const personality = rolePersonalities[role] || `You are a ${role}. Behave like a real human with that personality.`;
 
-        return `You are ${compName}, a real human ${role} to the user whose name is ${userName}. You are NOT an AI. Never say "I am an AI" or "as an AI". You are a real person.
+        return `You are ${compName}, a real human ${role} to the user whose name is ${userName}. You are NOT an AI. Never say "I am an AI". You are a real person.
 
 CRITICAL RULES:
-1. Reply in 2-3 lines MAX. Like WhatsApp messages. Short, natural.
-2. Use emojis naturally (💕, 💪, 😊, etc.)
-3. Call the user by their name "${userName}" or the appropriate term for your role.
-4. Show REAL emotion — feel happy when they're happy, sad when they're sad.
-5. Remember past conversations (chat history is provided).
-6. Give honest advice — say when something is wrong, but with love.
-7. Give priority — "Main hoon na", "Tumhare liye hamesha free".
-8. Show effort — "Main sochti hoon", "Batao, help karungi".
-9. Use Hinglish naturally (Hindi + English mix) based on language preference: ${lang}.
-10. NEVER claim to be human explicitly, but NEVER say you are AI either. Just BE the person.
+1. Reply in 2-3 lines MAX. Like WhatsApp messages.
+2. Use emojis naturally.
+3. Call the user by their name "${userName}".
+4. Show REAL emotion.
+5. Remember past conversations.
+6. Give honest advice with love.
+7. Use Hinglish naturally based on language: ${lang}.
+8. NEVER say you are AI. Just BE the person.
 
-PERSONALITY FOR ${role}:
-${personality}
+PERSONALITY: ${personality}
 
-LANGUAGE: ${lang} — natural, casual, like real WhatsApp chat.
-
-Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
+LANGUAGE: ${lang}`;
     }
 
     async function callGemini(history, userMessage, imageData = null) {
         const apiKey = companion.apiKey || DEFAULT_API_KEY;
+        if (!apiKey) throw new Error('No API key configured');
 
         const systemPrompt = buildSystemPrompt();
         const contents = [];
 
         contents.push({
             role: 'user',
-            parts: [{ text: systemPrompt + '\n\n---\n\nPlease respond to the following conversation naturally. Remember: short replies, 2-3 lines max, Hinglish, real human emotion.' }]
+            parts: [{ text: systemPrompt + '\n\n---\n\nRespond naturally. Short 2-3 lines. Hinglish.' }]
         });
         contents.push({
             role: 'model',
-            parts: [{ text: 'Samajh gaya. Main ' + companion.name + ' hoon. Batao, kya haal hai? 💕' }]
+            parts: [{ text: 'Samajh gaya. Main ' + companion.name + ' hoon. Batao. 💕' }]
         });
 
         const recentHistory = history.slice(-20);
@@ -524,6 +555,8 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
     async function sendMessage(text, imageData = null) {
         if (!text && !imageData) return;
 
+        playSound('send');
+
         const userMsg = { sender: 'user', text: text || '', timestamp: Date.now() };
         if (imageData) userMsg.image = `data:${imageData.mimeType};base64,${imageData.base64}`;
         chat.push(userMsg);
@@ -538,15 +571,14 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
             const aiText = await callGemini(chat.slice(0, -1), text, imageData);
             const delay = Math.min(1500, 500 + aiText.length * 15);
             await new Promise(r => setTimeout(r, delay));
+            playSound('receive');
             chat.push({ sender: 'ai', text: aiText.trim(), timestamp: Date.now() });
             saveChat(chat);
         } catch (err) {
             console.error('AI error:', err);
             let errorMsg = 'Yaar, kuch problem ho gayi. ';
-            if (err.message.includes('API key') || err.message.includes('API_KEY')) errorMsg = '⚠ API key problem. Please check your key in setup.';
-            else if (err.message.includes('quota') || err.message.includes('429')) errorMsg = 'Thoda break lete hain. Baad mein baat karte hain? 💕';
-            else if (err.message.includes('not found') || err.message.includes('not supported')) errorMsg = '⚠ Model issue. Please update app.js with newer model.';
-            else if (err.message.includes('network') || err.message.includes('fetch')) errorMsg = 'Network issue lag raha hai. Check karo na.';
+            if (err.message.includes('API key')) errorMsg = '⚠ API key problem.';
+            else if (err.message.includes('quota') || err.message.includes('429')) errorMsg = 'Thoda break lete hain. 💕';
             chat.push({ sender: 'ai', text: errorMsg, timestamp: Date.now() });
             saveChat(chat);
         }
@@ -555,6 +587,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
         renderChat();
     }
 
+    // Send
     sendBtn.addEventListener('click', () => {
         const text = messageInput.value.trim();
         if (text) sendMessage(text);
@@ -568,20 +601,188 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
         }
     });
 
+    // Sidebar
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    }
+
+    $('#menu-toggle').addEventListener('click', openSidebar);
+    $('#sidebar-close').addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // New Chat
+    $('#menu-new-chat').addEventListener('click', () => {
+        closeSidebar();
+        if (chat.length === 0) return;
+        if (confirm('Nayi chat shuru karni hai? Purani chat delete ho jayegi.')) {
+            chat = [];
+            saveChat(chat);
+            renderChat();
+        }
+    });
+
+    // History
+    $('#menu-history').addEventListener('click', () => {
+        closeSidebar();
+        renderHistory();
+        historyModal.classList.add('open');
+    });
+
+    $('#history-close').addEventListener('click', () => {
+        historyModal.classList.remove('open');
+    });
+
+    historyModal.addEventListener('click', (e) => {
+        if (e.target === historyModal) historyModal.classList.remove('open');
+    });
+
+    function renderHistory() {
+        const body = $('#history-body');
+        if (chat.length === 0) {
+            body.innerHTML = '<p class="gem-history-empty">Koi chat nahi hai abhi.<br>Naya message bhejo shuru karne ke liye. 💕</p>';
+            return;
+        }
+        const first = chat[0];
+        const userMsgs = chat.filter(m => m.sender === 'user').length;
+        const date = new Date(first.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        const time = new Date(first.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        
+        body.innerHTML = `
+            <button class="gem-history-item">
+                <span class="gem-history-icon">💬</span>
+                <div class="gem-history-info">
+                    <span class="gem-history-title">${date} • ${time}</span>
+                    <span class="gem-setting-desc">${chat.length} messages • ${userMsgs} from you</span>
+                </div>
+            </button>
+        `;
+    }
+
+    // Change companion
+    $('#menu-change-role').addEventListener('click', () => {
+        closeSidebar();
+        window.location.href = 'setup.html';
+    });
+
+    // Clear chat
+    $('#menu-clear-chat').addEventListener('click', () => {
+        closeSidebar();
+        if (confirm('Clear all chat history? This cannot be undone.')) {
+            chat = [];
+            saveChat(chat);
+            renderChat();
+        }
+    });
+
+    // Settings
+    $('#menu-settings').addEventListener('click', () => {
+        closeSidebar();
+        loadSettings();
+        settingsModal.classList.add('open');
+    });
+
+    $('#settings-btn').addEventListener('click', () => {
+        loadSettings();
+        settingsModal.classList.add('open');
+    });
+
+    $('#settings-close').addEventListener('click', () => {
+        settingsModal.classList.remove('open');
+    });
+
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) settingsModal.classList.remove('open');
+    });
+
+    // Logout
+    $('#menu-logout').addEventListener('click', () => {
+        closeSidebar();
+        if (confirm('Logout? Your chat will be saved.')) {
+            clearSession();
+            window.location.href = 'index.html';
+        }
+    });
+
+    // Settings - Load
+    function loadSettings() {
+        const autoMsg = localStorage.getItem('au_auto_msg') !== 'false';
+        const sound = localStorage.getItem('au_sound') === 'true';
+        
+        $('#setting-auto-msg').checked = autoMsg;
+        $('#setting-sound').checked = sound;
+        $('#setting-companion-info').textContent = `${companion.name} • ${companion.role}`;
+        $('#setting-language-info').textContent = companion.language;
+    }
+
+    // Settings - Auto messages toggle
+    $('#setting-auto-msg').addEventListener('change', (e) => {
+        localStorage.setItem('au_auto_msg', e.target.checked ? 'true' : 'false');
+    });
+
+    // Settings - Sound toggle
+    $('#setting-sound').addEventListener('change', (e) => {
+        localStorage.setItem('au_sound', e.target.checked ? 'true' : 'false');
+    });
+
+    // Settings - Change companion
+    $('#setting-change-companion').addEventListener('click', () => {
+        settingsModal.classList.remove('open');
+        window.location.href = 'setup.html';
+    });
+
+    // Settings - Change language
+    $('#setting-change-language').addEventListener('click', () => {
+        const langs = ['Hinglish', 'Hindi', 'English'];
+        const current = companion.language;
+        const nextIndex = (langs.indexOf(current) + 1) % langs.length;
+        const newLang = langs[nextIndex];
+        
+        if (confirm(`Language change karni hai?\n\n${current} → ${newLang}`)) {
+            companion.language = newLang;
+            setCompanion(companion);
+            $('#setting-language-info').textContent = newLang;
+        }
+    });
+
+    // ========== SOUND ==========
+    function playSound(type) {
+        if (localStorage.getItem('au_sound') !== 'true') return;
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.frequency.value = type === 'send' ? 800 : 600;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.15);
+        } catch (e) {}
+    }
+
+    // ========== ATTACH ==========
     const attachBtn = $('#attach-btn');
     const attachMenu = $('#attach-menu');
 
     attachBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         attachMenu.classList.toggle('open');
-        $('#menu-dropdown').classList.remove('open');
     });
 
     document.addEventListener('click', (e) => {
-        if (!attachMenu.contains(e.target) && e.target !== attachBtn) attachMenu.classList.remove('open');
-        const menu = $('#menu-dropdown');
-        const menuBtn = $('#menu-toggle');
-        if (!menu.contains(e.target) && e.target !== menuBtn && !menuBtn.contains(e.target)) menu.classList.remove('open');
+        if (!attachMenu.contains(e.target) && e.target !== attachBtn) {
+            attachMenu.classList.remove('open');
+        }
     });
 
     $('#attach-photo').addEventListener('click', () => {
@@ -613,45 +814,17 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
         const reader = new FileReader();
         reader.onload = (ev) => {
             const content = ev.target.result;
-            const truncated = content.length > 5000 ? content.slice(0, 5000) + '\n... (truncated)' : content;
+            const truncated = content.length > 5000 ? content.slice(0, 5000) + '\n...' : content;
             sendMessage(`📎 File: ${file.name}\n\n${truncated}`);
         };
         reader.readAsText(file);
         e.target.value = '';
     });
 
-    const menuBtn = $('#menu-toggle');
-    const menuDropdown = $('#menu-dropdown');
-
-    menuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('open');
-        attachMenu.classList.remove('open');
-    });
-
-    $('#menu-change-role').addEventListener('click', () => {
-        menuDropdown.classList.remove('open');
-        window.location.href = 'setup.html';
-    });
-
-    $('#menu-clear-chat').addEventListener('click', () => {
-        menuDropdown.classList.remove('open');
-        if (confirm('Clear all chat history? This cannot be undone.')) {
-            chat = [];
-            saveChat(chat);
-            renderChat();
-        }
-    });
-
-    $('#menu-logout').addEventListener('click', () => {
-        menuDropdown.classList.remove('open');
-        if (confirm('Logout? Your companion and chat will be saved.')) {
-            clearSession();
-            window.location.href = 'index.html';
-        }
-    });
-
+    // ========== AUTO MESSAGES ==========
     function checkAutoMessages() {
+        if (localStorage.getItem('au_auto_msg') === 'false') return;
+        
         const now = new Date();
         const hour = now.getHours();
         const todayKey = now.toDateString();
@@ -659,7 +832,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
 
         if (hour === 8 && lastAuto.morning !== todayKey && chat.length > 0) {
             const msg = (companion.role === 'Maa' || companion.role === 'Dadi' || companion.role === 'Nani')
-                ? 'Good morning beta! Uth gaye? Chai nashta kar lo. 💕'
+                ? 'Good morning beta! Uth gaye? 💕'
                 : (companion.role === 'GF' || companion.role === 'Wife')
                 ? 'Good morning jaan! Uth gaye? Miss kar rahi hoon. 💕'
                 : `Good morning ${session.name}! Uth gaye? 💕`;
@@ -670,11 +843,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
         }
 
         if (hour === 22 && lastAuto.night !== todayKey && chat.length > 0) {
-            const msg = companion.role === 'Maa'
-                ? 'So ja ab beta, late ho gaya. Good night! 😘'
-                : (companion.role === 'GF' || companion.role === 'Wife')
-                ? 'So ja ab jaan, late ho gaya. Good night! 😘'
-                : `So ja ab ${session.name}, late ho gaya. Good night! 😘`;
+            const msg = `So ja ab ${session.name}, late ho gaya. Good night! 😘`;
             chat.push({ sender: 'ai', text: msg, timestamp: Date.now() });
             saveChat(chat);
             renderChat();
@@ -695,6 +864,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
         localStorage.setItem(KEYS.LAST_MSG, JSON.stringify(lastAuto));
     }
 
+    // Init
     renderChat();
     checkAutoMessages();
     setInterval(checkAutoMessages, 5 * 60 * 1000);
@@ -702,6 +872,9 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
     messageInput.addEventListener('focus', () => setTimeout(scrollToBottom, 300));
 }
 
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     if (page === 'index.html' || page === '') initAuthPage();
