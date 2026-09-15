@@ -1,5 +1,6 @@
 /* ============================================================
-   AlwaysUs — Premium Cyber Theme v2.0
+   AlwaysUs — Premium Cyber Theme v3.0
+   Login + Setup + Gemini-Style Chat
    Fully responsive: iOS, Android, iPad, Laptop, PC
    ============================================================ */
 
@@ -14,48 +15,38 @@
     --bg: #030509;
     --bg2: #060b16;
     --bg3: #0a1220;
-    
     --cyan: #00e5ff;
     --cyan-soft: #4de8ff;
     --green: #00ffaa;
     --green-soft: #5cffc4;
     --gold: #ffd700;
-    
     --text: #eaf2fb;
     --text-dim: #7a8ba3;
     --text-fade: #4a5568;
-    
     --glass: rgba(8, 16, 30, 0.75);
     --glass-light: rgba(15, 25, 45, 0.6);
     --glass-border: rgba(0, 229, 255, 0.18);
-    --glass-border-hover: rgba(0, 229, 255, 0.45);
-    
     --grad-primary: linear-gradient(135deg, #00e5ff 0%, #00ffaa 100%);
     --grad-primary-soft: linear-gradient(135deg, rgba(0, 229, 255, 0.25) 0%, rgba(0, 255, 170, 0.25) 100%);
     --grad-bg: radial-gradient(ellipse at 50% 0%, #0a1828 0%, #030509 60%);
     --grad-card: linear-gradient(135deg, rgba(0, 229, 255, 0.05) 0%, rgba(0, 255, 170, 0.03) 100%);
-    
     --glow-cyan: 0 0 12px rgba(0, 229, 255, 0.6), 0 0 24px rgba(0, 229, 255, 0.25);
     --glow-cyan-lg: 0 0 20px rgba(0, 229, 255, 0.7), 0 0 40px rgba(0, 229, 255, 0.35), 0 0 60px rgba(0, 229, 255, 0.15);
     --glow-green: 0 0 12px rgba(0, 255, 170, 0.6), 0 0 24px rgba(0, 255, 170, 0.25);
     --glow-green-lg: 0 0 20px rgba(0, 255, 170, 0.7), 0 0 40px rgba(0, 255, 170, 0.35);
     --glow-soft: 0 8px 32px rgba(0, 229, 255, 0.12);
-    
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
-    
     --font-head: 'Orbitron', sans-serif;
     --font-body: 'JetBrains Mono', monospace;
     --font-alt: 'Rajdhani', sans-serif;
-    
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 18px;
     --radius-xl: 24px;
 }
 
-/* ========== GLOBAL RESET & iOS FIXES ========== */
 html, body {
     height: 100%;
     height: -webkit-fill-available;
@@ -72,7 +63,6 @@ html, body {
     text-size-adjust: 100%;
 }
 
-/* iOS ke liye specific height fix */
 @supports (-webkit-touch-callout: none) {
     html, body, #app {
         height: -webkit-fill-available;
@@ -165,7 +155,7 @@ html, body {
 
 .screen.active { display: flex; }
 
-/* ========== PREMIUM GLASS CARD ========== */
+/* ========== GLASS CARD ========== */
 .glass-card {
     background: var(--glass);
     backdrop-filter: blur(24px) saturate(180%);
@@ -262,7 +252,6 @@ html, body {
     font-size: 30px;
     font-weight: 700;
     letter-spacing: 3px;
-    color: var(--text);
     background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 50%, var(--green) 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -316,7 +305,6 @@ html, body {
     cursor: pointer;
     border-radius: var(--radius-sm);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
 }
 
 .tab.active {
@@ -420,7 +408,7 @@ html, body {
     background: rgba(0, 229, 255, 0.08);
 }
 
-/* ========== PREMIUM BUTTONS ========== */
+/* ========== BUTTONS ========== */
 .btn-primary {
     background: var(--grad-primary-soft);
     border: 1px solid var(--cyan);
@@ -673,15 +661,6 @@ html, body {
     overflow: hidden;
 }
 
-.category-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--grad-primary);
-    opacity: 0;
-    transition: opacity 0.35s;
-}
-
 .category-btn:hover {
     border-color: var(--cyan);
     box-shadow: var(--glow-cyan);
@@ -693,11 +672,6 @@ html, body {
     box-shadow: var(--glow-green-lg);
     background: rgba(0, 255, 170, 0.08);
     transform: translateY(-3px);
-}
-
-.category-btn > * {
-    position: relative;
-    z-index: 1;
 }
 
 .cat-icon {
@@ -723,10 +697,6 @@ html, body {
 }
 
 .role-grid::-webkit-scrollbar { width: 4px; }
-.role-grid::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
 .role-grid::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, var(--cyan), var(--green));
     border-radius: 4px;
@@ -780,14 +750,12 @@ html, body {
     transition: all 0.25s;
     font-family: var(--font-alt);
     font-weight: 600;
-    letter-spacing: 0.5px;
 }
 
 .sugg:hover {
     border-color: var(--cyan);
     color: var(--cyan);
     box-shadow: var(--glow-cyan);
-    transform: translateY(-1px);
     background: rgba(0, 229, 255, 0.12);
 }
 
@@ -814,722 +782,939 @@ html, body {
 
 .setup-nav button { flex: 1; }
 
-/* ========== CHAT SCREEN ========== */
+/* ============================================================
+   GEMINI-STYLE CHAT UI
+   ============================================================ */
+
 #chat-screen {
-    padding: 0;
     display: none;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+    padding: 0;
+    position: relative;
     max-width: 100%;
 }
 
 #chat-screen.active { display: flex; }
 
-.chat-topbar {
+/* ========== TOPBAR ========== */
+.gem-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px;
-    background: rgba(3, 5, 9, 0.85);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid var(--glass-border);
-    flex-shrink: 0;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
-}
-
-.chat-topbar::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent);
-    opacity: 0.5;
-}
-
-.topbar-left {
-    display: flex;
-    align-items: center;
     gap: 12px;
-}
-
-.avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(0, 255, 170, 0.3));
-    border: 2px solid var(--cyan);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-head);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--cyan);
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
-    box-shadow: var(--glow-cyan);
+    padding: 12px 16px;
+    padding-top: max(12px, env(safe-area-inset-top, 12px));
+    background: rgba(3, 5, 9, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-shrink: 0;
+    z-index: 10;
     position: relative;
 }
 
-.avatar::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 229, 255, 0.3);
-    animation: avatarPulse 2.5s ease-in-out infinite;
+.gem-topbar-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    justify-content: center;
 }
 
-@keyframes avatarPulse {
+.gem-title-icon {
+    font-size: 20px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+    animation: gemIconPulse 3s ease-in-out infinite;
+    line-height: 1;
+}
+
+@keyframes gemIconPulse {
     0%, 100% { 
-        transform: scale(1); 
-        opacity: 0.6;
+        text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); 
+        transform: scale(1);
     }
     50% { 
-        transform: scale(1.1); 
-        opacity: 0.2;
+        text-shadow: 0 0 20px rgba(0, 229, 255, 1); 
+        transform: scale(1.08);
     }
 }
 
-.topbar-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.companion-name {
+.gem-title-text {
     font-family: var(--font-head);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    color: var(--text);
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--cyan) 60%, var(--green) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.status {
-    font-size: 10px;
-    color: var(--green);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: var(--font-alt);
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.online-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-.icon-btn {
-    background: rgba(0, 229, 255, 0.05);
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    width: 38px;
-    height: 38px;
+.gem-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    font-size: 20px;
+    border-radius: 50%;
+    transition: all 0.25s;
+    flex-shrink: 0;
+}
+
+.gem-icon-btn:hover,
+.gem-icon-btn:active {
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--cyan);
+}
+
+.gem-icon-btn.small {
+    width: 34px;
+    height: 34px;
     font-size: 16px;
-    transition: all 0.3s;
-    backdrop-filter: blur(10px);
 }
 
-.icon-btn:hover {
-    border-color: var(--cyan);
-    box-shadow: var(--glow-cyan);
-    background: rgba(0, 229, 255, 0.12);
-    transform: translateY(-1px);
-}
-
-/* ========== DROPDOWNS ========== */
-.menu-dropdown,
-.attach-menu {
-    position: absolute;
-    background: rgba(8, 16, 30, 0.96);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-md);
-    padding: 8px;
-    display: none;
-    flex-direction: column;
-    gap: 3px;
-    z-index: 100;
-    box-shadow: var(--shadow-lg), var(--glow-soft);
-    overflow: hidden;
-}
-
-.menu-dropdown::before,
-.attach-menu::before {
-    content: '';
-    position: absolute;
+/* ========== SIDEBAR ========== */
+.gem-sidebar {
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    opacity: 0.6;
-}
-
-.menu-dropdown {
-    top: 66px;
-    right: 16px;
-    min-width: 180px;
-}
-
-.attach-menu {
-    bottom: 76px;
-    left: 18px;
-    min-width: 150px;
-}
-
-.menu-dropdown.open,
-.attach-menu.open {
+    bottom: 0;
+    width: 300px;
+    max-width: 85vw;
+    background: linear-gradient(180deg, #0a1220 0%, #050810 100%);
+    border-right: 1px solid rgba(0, 229, 255, 0.15);
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
-    animation: dropdownIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-direction: column;
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.6);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-@keyframes dropdownIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+.gem-sidebar.open { transform: translateX(0); }
+
+.gem-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+    flex-shrink: 0;
 }
 
-.menu-dropdown button,
-.attach-menu button {
+.gem-sidebar-logo {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.gem-sidebar-menu {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow-y: auto;
+}
+
+.gem-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     background: transparent;
     border: none;
     color: var(--text);
+    padding: 13px 16px;
+    font-family: var(--font-alt);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.25s;
+    text-align: left;
+    width: 100%;
+}
+
+.gem-menu-item:hover,
+.gem-menu-item:active {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(0, 255, 170, 0.06));
+    color: var(--cyan);
+}
+
+.gem-menu-item.danger:hover {
+    background: rgba(255, 85, 119, 0.1);
+    color: #ff5577;
+}
+
+.gem-menu-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.gem-menu-divider {
+    height: 1px;
+    background: rgba(0, 229, 255, 0.1);
+    margin: 8px 12px;
+}
+
+.gem-sidebar-footer {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(0, 229, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.gem-companion-badge {
+    font-family: var(--font-alt);
+    font-size: 12px;
+    color: var(--cyan);
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    display: inline-block;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.gem-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.gem-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ========== CHAT AREA ========== */
+.gem-chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+.gem-chat-area::-webkit-scrollbar { width: 4px; }
+.gem-chat-area::-webkit-scrollbar-track { background: transparent; }
+.gem-chat-area::-webkit-scrollbar-thumb {
+    background: rgba(0, 229, 255, 0.3);
+    border-radius: 4px;
+}
+
+/* ========== MESSAGES ========== */
+.gem-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: gemMsgIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 100%;
+}
+
+@keyframes gemMsgIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.gem-msg.user {
+    justify-content: flex-end;
+}
+
+.gem-msg-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.25), rgba(0, 255, 170, 0.2));
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-size: 14px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+.gem-msg-content {
+    max-width: 78%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gem-msg.user .gem-msg-content {
+    align-items: flex-end;
+    max-width: 82%;
+}
+
+.gem-msg-text {
     padding: 11px 15px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    letter-spacing: 0.2px;
+}
+
+.gem-msg.ai .gem-msg-text {
+    background: rgba(10, 20, 35, 0.8);
+    border: 1px solid rgba(0, 229, 255, 0.12);
+    color: var(--text);
+    border-top-left-radius: 4px;
+}
+
+.gem-msg.user .gem-msg-text {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 255, 170, 0.12));
+    border: 1px solid rgba(0, 255, 170, 0.25);
+    color: var(--text);
+    border-top-right-radius: 4px;
+}
+
+.gem-msg-text img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.gem-msg-time {
+    font-size: 10px;
+    color: var(--text-fade);
+    font-family: var(--font-alt);
+    padding: 0 6px;
+    letter-spacing: 0.3px;
+}
+
+/* ========== TYPING INDICATOR ========== */
+.gem-typing {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 16px;
+    margin: 0 16px 8px;
+    background: rgba(10, 20, 35, 0.7);
+    border: 1px solid rgba(0, 229, 255, 0.12);
+    border-radius: 18px;
+    border-top-left-radius: 4px;
+    width: fit-content;
+    backdrop-filter: blur(10px);
+}
+
+.gem-typing.show {
+    display: flex;
+    animation: gemMsgIn 0.3s ease;
+}
+
+.gem-typing-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: gemTyping 1.4s infinite;
+    box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+}
+
+.gem-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.gem-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes gemTyping {
+    0%, 60%, 100% { 
+        transform: translateY(0); 
+        opacity: 0.35; 
+    }
+    30% { 
+        transform: translateY(-6px); 
+        opacity: 1; 
+    }
+}
+
+/* ========== INPUT BAR ========== */
+.gem-input-wrap {
+    padding: 8px 16px 14px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
+    flex-shrink: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(3, 5, 9, 0.9) 30%);
+    position: relative;
+    z-index: 5;
+}
+
+.gem-input-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 25, 45, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 229, 255, 0.18);
+    border-radius: 26px;
+    padding: 6px 6px 6px 10px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.gem-input-bar:focus-within {
+    border-color: var(--cyan);
+    box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.4),
+        0 0 0 3px rgba(0, 229, 255, 0.1),
+        0 0 20px rgba(0, 229, 255, 0.2);
+}
+
+.gem-input-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 300;
+    transition: all 0.25s;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.gem-input-btn:hover,
+.gem-input-btn:active {
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--cyan);
+}
+
+#message-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 10px 8px;
+    outline: none;
+    min-width: 0;
+}
+
+#message-input::placeholder {
+    color: rgba(122, 139, 163, 0.55);
+}
+
+.gem-send-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    border: none;
+    color: #030509;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    padding: 0;
+}
+
+.gem-send-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+}
+
+.gem-send-btn:active {
+    transform: scale(0.94);
+}
+
+.gem-send-btn svg {
+    display: block;
+    margin-left: 2px;
+}
+
+/* ========== ATTACH MENU ========== */
+.gem-attach-menu {
+    position: absolute;
+    bottom: 70px;
+    left: 16px;
+    background: rgba(10, 20, 35, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 14px;
+    padding: 6px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 100;
+    min-width: 150px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.gem-attach-menu.open {
+    display: flex;
+    animation: gemMenuIn 0.2s ease;
+}
+
+@keyframes gemMenuIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gem-attach-menu button {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    padding: 11px 14px;
     text-align: left;
     font-family: var(--font-alt);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: all 0.25s;
-    letter-spacing: 0.5px;
+    border-radius: 8px;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
-.menu-dropdown button:hover,
-.attach-menu button:hover {
-    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 255, 170, 0.1));
+.gem-attach-menu button:hover,
+.gem-attach-menu button:active {
+    background: rgba(0, 229, 255, 0.1);
     color: var(--cyan);
-    box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.2);
 }
 
-/* ========== CHAT AREA ========== */
-.chat-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-}
-
-.chat-area::-webkit-scrollbar { width: 4px; }
-.chat-area::-webkit-scrollbar-track {
-    background: transparent;
-}
-.chat-area::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--cyan), var(--green));
-    border-radius: 4px;
-    opacity: 0.5;
-}
-
-.message {
-    max-width: 82%;
-    padding: 12px 16px;
-    border-radius: var(--radius-lg);
-    font-size: 13px;
-    line-height: 1.55;
-    animation: msgIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    word-wrap: break-word;
-    position: relative;
-    box-shadow: var(--shadow-sm);
-    font-weight: 400;
-    letter-spacing: 0.2px;
-}
-
-@keyframes msgIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(12px) scale(0.96); 
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
-    }
-}
-
-.message.ai {
-    align-self: flex-start;
-    background: linear-gradient(135deg, rgba(0, 229, 255, 0.12), rgba(0, 229, 255, 0.06));
-    border: 1px solid rgba(0, 229, 255, 0.22);
-    border-bottom-left-radius: 6px;
-    color: var(--text);
-    backdrop-filter: blur(10px);
-    box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(0, 229, 255, 0.15);
-}
-
-.message.user {
-    align-self: flex-end;
-    background: linear-gradient(135deg, rgba(0, 255, 170, 0.18), rgba(0, 229, 255, 0.12));
-    border: 1px solid rgba(0, 255, 170, 0.3);
-    border-bottom-right-radius: 6px;
-    color: var(--text);
-    backdrop-filter: blur(10px);
-    box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(0, 255, 170, 0.2);
-}
-
-.message img {
-    max-width: 100%;
-    border-radius: var(--radius-sm);
-    margin-top: 6px;
-    border: 1px solid rgba(0, 229, 255, 0.2);
-}
-
-.message .msg-time {
-    font-size: 9px;
-    color: var(--text-dim);
-    margin-top: 6px;
-    display: block;
-    text-align: right;
-    font-family: var(--font-alt);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    opacity: 0.7;
-}
-
-/* ========== TYPING INDICATOR ========== */
-.typing-indicator {
+/* ========== MODAL ========== */
+.gem-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 300;
     display: none;
     align-items: center;
-    gap: 5px;
-    padding: 12px 18px;
-    margin-left: 18px;
-    margin-bottom: 6px;
-    background: rgba(0, 229, 255, 0.08);
-    border: 1px solid rgba(0, 229, 255, 0.18);
-    border-radius: var(--radius-lg);
-    border-bottom-left-radius: 6px;
-    width: fit-content;
-    backdrop-filter: blur(10px);
-}
-
-.typing-indicator.show {
-    display: flex;
-    animation: msgIn 0.3s ease;
-}
-
-.typing-indicator .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--cyan);
-    animation: typing 1.4s infinite;
-    box-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
-    border: none;
-}
-
-.typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typing {
-    0%, 60%, 100% { 
-        transform: translateY(0); 
-        opacity: 0.4; 
-    }
-    30% { 
-        transform: translateY(-7px); 
-        opacity: 1; 
-    }
-}
-
-/* ========== INPUT AREA ========== */
-.chat-input-area {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 18px;
-    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    background: rgba(3, 5, 9, 0.92);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-top: 1px solid var(--glass-border);
-    flex-shrink: 0;
-    position: relative;
-}
-
-.chat-input-area::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cyan), var(--green), transparent);
-    opacity: 0.4;
-}
-
-#message-input {
-    flex: 1;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(0, 229, 255, 0.15);
-    border-radius: 22px;
-    padding: 11px 18px;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
-    min-width: 0;
-}
-
-#message-input:focus {
-    border-color: var(--cyan);
-    background: rgba(0, 229, 255, 0.04);
-    box-shadow: 
-        inset 0 2px 6px rgba(0, 0, 0, 0.3),
-        0 0 0 3px rgba(0, 229, 255, 0.1),
-        var(--glow-cyan);
-}
-
-#message-input::placeholder {
-    color: rgba(122, 139, 163, 0.5);
-}
-
-.send-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--grad-primary);
-    border: none;
-    color: var(--bg);
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--glow-cyan-lg);
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.send-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--green), var(--cyan));
+    padding: 20px;
     opacity: 0;
     transition: opacity 0.3s;
 }
 
-.send-btn:hover {
-    transform: scale(1.08) rotate(8deg);
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.8);
+.gem-modal.open {
+    display: flex;
+    opacity: 1;
 }
 
-.send-btn:hover::before { opacity: 1; }
-
-.send-btn:active {
-    transform: scale(0.94);
+.gem-modal-content {
+    background: linear-gradient(180deg, #0a1220 0%, #060b16 100%);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 229, 255, 0.1);
+    animation: gemModalIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
 }
 
-.attach-btn {
-    font-size: 22px;
-    font-weight: 300;
+@keyframes gemModalIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.94) translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    }
+}
+
+.gem-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.12);
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
+}
+
+.gem-modal-title {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    text-transform: uppercase;
+}
+
+.gem-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gem-modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid rgba(0, 229, 255, 0.08);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.gem-version {
+    font-family: var(--font-alt);
+    font-size: 11px;
+    color: var(--text-fade);
+    letter-spacing: 1px;
+}
+
+/* ========== SETTINGS ITEMS ========== */
+.gem-setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.06);
+}
+
+.gem-setting-item:last-child {
+    border-bottom: none;
+}
+
+.gem-setting-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.gem-setting-label {
+    font-family: var(--font-alt);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.5px;
+}
+
+.gem-setting-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--font-alt);
+    letter-spacing: 0.3px;
+}
+
+.gem-small-btn {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    color: var(--cyan);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-family: var(--font-alt);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.gem-small-btn:hover {
+    background: rgba(0, 229, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+/* ========== TOGGLE SWITCH ========== */
+.gem-switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.gem-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.gem-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    border-radius: 26px;
+    transition: 0.3s;
+}
+
+.gem-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text-dim);
     border-radius: 50%;
+    transition: 0.3s;
 }
 
-/* ============================================================
-   RESPONSIVE — All Devices
-   ============================================================ */
-
-/* ========== iOS Safe Area (Notch/Dynamic Island) ========== */
-@supports (padding: env(safe-area-inset-top)) {
-    .chat-topbar {
-        padding-top: calc(14px + env(safe-area-inset-top, 0px));
-        padding-left: calc(18px + env(safe-area-inset-left, 0px));
-        padding-right: calc(18px + env(safe-area-inset-right, 0px));
-    }
-    .chat-input-area {
-        padding-left: calc(18px + env(safe-area-inset-left, 0px));
-        padding-right: calc(18px + env(safe-area-inset-right, 0px));
-        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    }
-    .screen {
-        padding-top: calc(20px + env(safe-area-inset-top, 0px));
-        padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-    }
+.gem-switch input:checked + .gem-slider {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(0, 255, 170, 0.25));
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
 }
 
-/* ========== SMALL PHONES (320px - 375px) ========== */
-@media (max-width: 375px) {
-    .glass-card { padding: 20px 16px; border-radius: var(--radius-lg); }
-    .logo-text { font-size: 22px; letter-spacing: 2px; }
-    .logo-icon { font-size: 26px; }
-    .tagline { font-size: 9px; letter-spacing: 2px; }
-    
-    .category-btn { padding: 14px 4px; }
-    .cat-icon { font-size: 22px; }
-    .cat-label { font-size: 10px; }
-    
-    .role-grid { 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 6px;
-        max-height: 220px;
-    }
-    .role-btn { font-size: 10px; padding: 9px 4px; }
-    
-    .message { font-size: 12px; padding: 9px 12px; max-width: 90%; }
-    
-    .chat-area { padding: 12px; gap: 9px; }
-    .chat-input-area { padding: 9px 12px; gap: 6px; }
-    #message-input { padding: 9px 14px; font-size: 16px; }
-    
-    .send-btn { width: 38px; height: 38px; font-size: 14px; }
-    .attach-btn { width: 36px; height: 36px; font-size: 18px; }
-    
-    .companion-name { font-size: 13px; }
-    .avatar { width: 36px; height: 36px; font-size: 14px; }
-    
-    .setup-header h2 { font-size: 16px; letter-spacing: 3px; }
-    .dot { width: 30px; height: 30px; font-size: 11px; }
-    
-    .setup-nav { flex-direction: column; gap: 10px; }
+.gem-switch input:checked + .gem-slider:before {
+    transform: translate(20px, -50%);
+    background: var(--cyan);
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
 }
 
-/* ========== PHONES (376px - 480px) ========== */
-@media (min-width: 376px) and (max-width: 480px) {
-    .glass-card { padding: 26px 20px; }
-    .logo-text { font-size: 26px; }
+/* ========== HISTORY ITEMS ========== */
+.gem-history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(0, 229, 255, 0.04);
+    border: 1px solid rgba(0, 229, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.gem-history-item:hover {
+    background: rgba(0, 229, 255, 0.08);
+    border-color: rgba(0, 229, 255, 0.25);
+}
+
+.gem-history-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.gem-history-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gem-history-title {
+    font-family: var(--font-alt);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.gem-history-empty {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 30px 20px;
+    font-family: var(--font-alt);
+    font-size: 13px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 480px) {
+    .glass-card {
+        padding: 24px 20px;
+        border-radius: var(--radius-lg);
+    }
+    
+    .logo-text { font-size: 26px; letter-spacing: 2px; }
     .logo-icon { font-size: 30px; }
+    .tagline { font-size: 10px; letter-spacing: 2px; margin-bottom: 22px; }
     
     .category-grid { gap: 10px; }
     .category-btn { padding: 18px 6px; }
     .cat-icon { font-size: 26px; }
     .cat-label { font-size: 11px; }
     
-    .role-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+    .role-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 7px;
+        max-height: 240px;
+    }
     .role-btn { font-size: 11px; padding: 11px 5px; }
     
-    .message { max-width: 88%; font-size: 12.5px; padding: 10px 14px; }
+    .gem-chat-area { padding: 14px; gap: 12px; }
+    .gem-msg-content { max-width: 82%; }
+    .gem-msg-text { font-size: 13.5px; padding: 10px 14px; }
     
-    .chat-area { padding: 14px; gap: 10px; }
-    .chat-input-area { padding: 10px 14px; gap: 7px; }
-    #message-input { padding: 10px 16px; font-size: 16px; }
+    .gem-input-wrap { padding: 6px 12px 12px; }
+    .gem-input-bar { padding: 5px 5px 5px 8px; }
+    #message-input { font-size: 16px; padding: 9px 6px; }
+    .gem-send-btn { width: 36px; height: 36px; }
+    .gem-input-btn { width: 34px; height: 34px; font-size: 20px; }
     
-    .send-btn { width: 42px; height: 42px; }
-    .attach-btn { width: 40px; height: 40px; }
+    .gem-topbar { padding: 10px 14px; }
+    .gem-title-text { font-size: 13px; }
+    .gem-title-icon { font-size: 18px; }
+    .gem-icon-btn { width: 38px; height: 38px; font-size: 18px; }
+    
+    .gem-modal-content { max-height: 88vh; }
+    .gem-modal-body { padding: 14px 16px; }
+    .gem-modal-header { padding: 16px 18px; }
 }
 
-/* ========== TABLETS / iPAD (481px - 1024px) ========== */
-@media (min-width: 481px) and (max-width: 1024px) {
-    .glass-card {
-        max-width: 520px;
-        padding: 40px 36px;
-    }
+@media (max-width: 375px) {
+    .glass-card { padding: 20px 16px; }
+    .logo-text { font-size: 22px; }
+    .logo-icon { font-size: 26px; }
+    .tagline { font-size: 9px; }
     
+    .category-btn { padding: 14px 4px; }
+    .cat-icon { font-size: 22px; }
+    .cat-label { font-size: 10px; }
+    
+    .role-btn { font-size: 10px; padding: 9px 4px; }
+    
+    .gem-msg-text { font-size: 13px; padding: 9px 12px; }
+    .gem-chat-area { padding: 12px; gap: 10px; }
+    
+    .gem-input-wrap { padding: 6px 10px 10px; }
+    #message-input { padding: 8px 6px; }
+    .gem-send-btn { width: 34px; height: 34px; }
+    .gem-send-btn svg { width: 16px; height: 16px; }
+    .gem-input-btn { width: 32px; height: 32px; font-size: 18px; }
+    
+    .gem-topbar { padding: 9px 12px; }
+    .gem-title-text { font-size: 12px; letter-spacing: 1px; }
+    .gem-icon-btn { width: 34px; height: 34px; font-size: 16px; }
+}
+
+@media (min-width: 768px) {
+    .glass-card { padding: 40px 36px; max-width: 480px; }
     .logo-text { font-size: 34px; }
     .logo-icon { font-size: 40px; }
     
-    .message { max-width: 68%; font-size: 14px; }
+    .setup-card { max-width: 540px; }
     
-    .chat-area { padding: 24px 8%; }
-    .chat-input-area { padding: 14px 8%; }
-    
-    .role-grid { grid-template-columns: repeat(3, 1fr); }
-    
-    .category-grid { gap: 18px; }
-    .category-btn { padding: 26px 14px; }
-    .cat-icon { font-size: 38px; }
-    .cat-label { font-size: 14px; }
-}
-
-/* ========== LAPTOP (1025px - 1440px) ========== */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    .glass-card {
-        max-width: 460px;
-        padding: 42px 40px;
-    }
-    
-    .message { max-width: 58%; font-size: 14px; }
-    
-    .chat-area { 
-        padding: 28px 15%;
+    .gem-chat-area {
+        padding: 24px 12%;
         max-width: 1100px;
         margin: 0 auto;
         width: 100%;
     }
+    .gem-msg-content { max-width: 65%; }
     
-    .chat-topbar {
-        padding: 16px 24px;
+    .gem-input-wrap {
+        padding: 12px 12% 18px;
     }
+    .gem-input-bar { max-width: 900px; margin: 0 auto; }
     
-    .chat-input-area {
-        padding: 16px 15%;
-        max-width: 1100px;
-        margin: 0 auto;
-        width: 100%;
+    .gem-topbar {
+        padding: 14px 24px;
     }
+    .gem-title-text { font-size: 16px; }
+    .gem-title-icon { font-size: 22px; }
 }
 
-/* ========== LARGE DESKTOP (1441px+) ========== */
 @media (min-width: 1441px) {
-    .glass-card {
-        max-width: 480px;
-        padding: 48px 44px;
-    }
-    
-    .chat-area {
+    .gem-chat-area {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 32px 20%;
+        padding: 32px 18%;
     }
-    
-    .chat-topbar {
-        padding: 18px 32px;
-    }
-    
-    .chat-input-area {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 18px 20%;
-    }
-    
-    .message { max-width: 55%; font-size: 14px; }
-    
-    .setup-card {
-        max-width: 560px;
-    }
+    .gem-input-wrap { padding: 12px 18% 20px; }
+    .gem-msg-content { max-width: 60%; }
 }
 
-/* ========== LANDSCAPE MOBILE ========== */
 @media (max-height: 500px) and (orientation: landscape) {
     .glass-card {
         padding: 16px 20px;
         max-height: 92vh;
         overflow-y: auto;
     }
-    
     .logo-text { font-size: 22px; }
     .tagline { display: none; }
-    
-    .input-group input,
-    .input-group select {
-        padding: 10px 14px;
-    }
-    
-    .btn-primary,
-    .btn-secondary {
-        padding: 11px;
-    }
-    
     .role-grid { max-height: 140px; }
-    
-    .chat-area { padding: 10px 6%; gap: 8px; }
-    .message { padding: 8px 12px; font-size: 12px; max-width: 70%; }
+    .gem-chat-area { padding: 10px 6%; gap: 8px; }
 }
 
-/* ========== VERY SMALL HEIGHT ========== */
-@media (max-height: 600px) {
-    .chat-area { padding: 10px 14px; gap: 8px; }
-    .message { padding: 9px 12px; font-size: 12px; }
-}
-
-/* ========== TOUCH DEVICES ========== */
 @media (hover: none) and (pointer: coarse) {
-    .btn-primary,
-    .btn-secondary,
-    .category-btn,
-    .role-btn {
+    .btn-primary, .btn-secondary,
+    .category-btn, .role-btn {
         min-height: 48px;
     }
-    
-    .icon-btn,
-    .send-btn,
-    .attach-btn {
-        min-width: 44px;
-        min-height: 44px;
-    }
-    
-    .btn-primary:hover,
-    .category-btn:hover,
-    .role-btn:hover {
-        transform: none;
+    .gem-icon-btn, .gem-input-btn, .gem-send-btn {
+        min-width: 40px;
+        min-height: 40px;
     }
 }
 
-/* ========== REDUCED MOTION ========== */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    .grid, .scanline {
-        animation: none;
-    }
+    .grid, .scanline { animation: none; }
 }
 
-/* ========== SELECTION ========== */
 ::selection {
     background: rgba(0, 229, 255, 0.3);
     color: var(--text);
 }
 
-/* ========== SCROLLBAR GLOBAL ========== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, rgba(0, 229, 255, 0.4), rgba(0, 255, 170, 0.4));
     border-radius: 3px;
 }
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--cyan), var(--green));
-}
 
-/* ========== SMOOTH SCROLL ========== */
-* {
-    scroll-behavior: smooth;
-}
+* { scroll-behavior: smooth; }
 
-/* ========== FOCUS VISIBILITY ========== */
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
