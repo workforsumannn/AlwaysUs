@@ -20,39 +20,155 @@
 
     <div id="app">
         <div id="chat-screen" class="screen active">
-            <div class="chat-topbar">
-                <div class="topbar-left">
-                    <div class="avatar" id="chat-avatar">A</div>
-                    <div class="topbar-info">
-                        <span class="companion-name" id="chat-name">Aria</span>
-                        <span class="status"><span class="online-dot"></span> Online</span>
+
+            <!-- MINIMAL TOPBAR -->
+            <div class="gem-topbar">
+                <button id="menu-toggle" class="gem-icon-btn" title="Menu">☰</button>
+                <div class="gem-topbar-title">
+                    <span class="gem-title-icon">∞</span>
+                    <span class="gem-title-text">AlwaysUs</span>
+                </div>
+                <button id="settings-btn" class="gem-icon-btn" title="Settings">⚙</button>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div id="gem-sidebar" class="gem-sidebar">
+                <div class="gem-sidebar-header">
+                    <span class="gem-sidebar-logo">∞ AlwaysUs</span>
+                    <button id="sidebar-close" class="gem-icon-btn small">✕</button>
+                </div>
+
+                <div class="gem-sidebar-menu">
+                    <button id="menu-new-chat" class="gem-menu-item">
+                        <span class="gem-menu-icon">✦</span>
+                        <span>New Chat</span>
+                    </button>
+
+                    <button id="menu-history" class="gem-menu-item">
+                        <span class="gem-menu-icon">🕐</span>
+                        <span>Chat History</span>
+                    </button>
+
+                    <button id="menu-change-role" class="gem-menu-item">
+                        <span class="gem-menu-icon">🔄</span>
+                        <span>Change Companion</span>
+                    </button>
+
+                    <button id="menu-clear-chat" class="gem-menu-item">
+                        <span class="gem-menu-icon">🗑</span>
+                        <span>Clear Chat</span>
+                    </button>
+
+                    <div class="gem-menu-divider"></div>
+
+                    <button id="menu-settings" class="gem-menu-item">
+                        <span class="gem-menu-icon">⚙</span>
+                        <span>Settings</span>
+                    </button>
+
+                    <button id="menu-logout" class="gem-menu-item danger">
+                        <span class="gem-menu-icon">🚪</span>
+                        <span>Logout</span>
+                    </button>
+                </div>
+
+                <div class="gem-sidebar-footer">
+                    <span class="gem-companion-badge" id="sidebar-companion">Aria • GF</span>
+                </div>
+            </div>
+            <div id="sidebar-overlay" class="gem-overlay"></div>
+
+            <!-- CHAT MESSAGES -->
+            <div class="gem-chat-area" id="chat-area"></div>
+
+            <!-- TYPING INDICATOR -->
+            <div class="gem-typing" id="typing-indicator">
+                <span class="gem-typing-dot"></span>
+                <span class="gem-typing-dot"></span>
+                <span class="gem-typing-dot"></span>
+            </div>
+
+            <!-- ROUNDED INPUT -->
+            <div class="gem-input-wrap">
+                <div class="gem-input-bar">
+                    <button id="attach-btn" class="gem-input-btn" title="Attach">+</button>
+                    <div id="attach-menu" class="gem-attach-menu">
+                        <button id="attach-photo">
+                            <span class="gem-menu-icon">📷</span>
+                            <span>Photo</span>
+                        </button>
+                        <button id="attach-file">
+                            <span class="gem-menu-icon">📎</span>
+                            <span>File</span>
+                        </button>
+                    </div>
+                    <input type="text" id="message-input" placeholder="Message..." autocomplete="off">
+                    <button id="send-btn" class="gem-send-btn" title="Send">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SETTINGS MODAL -->
+            <div id="settings-modal" class="gem-modal">
+                <div class="gem-modal-content">
+                    <div class="gem-modal-header">
+                        <span class="gem-modal-title">Settings</span>
+                        <button id="settings-close" class="gem-icon-btn small">✕</button>
+                    </div>
+                    <div class="gem-modal-body">
+                        <div class="gem-setting-item">
+                            <div class="gem-setting-info">
+                                <span class="gem-setting-label">Auto Messages</span>
+                                <span class="gem-setting-desc">Morning, night & inactivity messages</span>
+                            </div>
+                            <label class="gem-switch">
+                                <input type="checkbox" id="setting-auto-msg" checked>
+                                <span class="gem-slider"></span>
+                            </label>
+                        </div>
+                        <div class="gem-setting-item">
+                            <div class="gem-setting-info">
+                                <span class="gem-setting-label">Sound Effects</span>
+                                <span class="gem-setting-desc">Message send/receive sounds</span>
+                            </div>
+                            <label class="gem-switch">
+                                <input type="checkbox" id="setting-sound">
+                                <span class="gem-slider"></span>
+                            </label>
+                        </div>
+                        <div class="gem-setting-item">
+                            <div class="gem-setting-info">
+                                <span class="gem-setting-label">Companion</span>
+                                <span class="gem-setting-desc" id="setting-companion-info">Aria • GF</span>
+                            </div>
+                            <button id="setting-change-companion" class="gem-small-btn">Change</button>
+                        </div>
+                        <div class="gem-setting-item">
+                            <div class="gem-setting-info">
+                                <span class="gem-setting-label">Language</span>
+                                <span class="gem-setting-desc" id="setting-language-info">Hinglish</span>
+                            </div>
+                            <button id="setting-change-language" class="gem-small-btn">Change</button>
+                        </div>
+                    </div>
+                    <div class="gem-modal-footer">
+                        <span class="gem-version">AlwaysUs v1.0</span>
                     </div>
                 </div>
-                <div class="topbar-right">
-                    <button id="menu-toggle" class="icon-btn">☰</button>
+            </div>
+
+            <!-- HISTORY MODAL -->
+            <div id="history-modal" class="gem-modal">
+                <div class="gem-modal-content">
+                    <div class="gem-modal-header">
+                        <span class="gem-modal-title">Chat History</span>
+                        <button id="history-close" class="gem-icon-btn small">✕</button>
+                    </div>
+                    <div class="gem-modal-body" id="history-body"></div>
                 </div>
-            </div>
-
-            <div id="menu-dropdown" class="menu-dropdown">
-                <button id="menu-change-role">🔄 Change Role</button>
-                <button id="menu-clear-chat">🗑 Clear Chat</button>
-                <button id="menu-logout">🚪 Logout</button>
-            </div>
-
-            <div class="chat-area" id="chat-area"></div>
-
-            <div class="typing-indicator" id="typing-indicator">
-                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            </div>
-
-            <div class="chat-input-area">
-                <button id="attach-btn" class="icon-btn attach-btn">+</button>
-                <div id="attach-menu" class="attach-menu">
-                    <button id="attach-photo">📷 Photo</button>
-                    <button id="attach-file">📎 File</button>
-                </div>
-                <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
-                <button id="send-btn" class="send-btn">➤</button>
             </div>
 
             <input type="file" id="photo-input" accept="image/*" hidden>
