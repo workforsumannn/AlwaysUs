@@ -1,5 +1,5 @@
 /* ============================================================
-   AlwaysUs — App Logic v3.0
+   AlwaysUs — App Logic v5 (Love Theme)
    ============================================================ */
 
 const KEYS = {
@@ -10,6 +10,14 @@ const KEYS = {
     LAST_MSG: 'au_last_msg'
 };
 
+/* ============================================================
+   API CONFIG
+   ------------------------------------------------------------
+   SAFE: Cloudflare Worker URL daalo (neeche guide)
+   UNSAFE: Direct key (public repo me leak hoga)
+   ============================================================ */
+
+const API_PROXY_URL = ''; // Cloudflare Worker URL (recommended)
 const DEFAULT_API_KEY = 'YAHAN_NAYI_KEY_PASTE_KARO';
 
 const $ = (sel) => document.querySelector(sel);
@@ -39,9 +47,7 @@ function saveChat(chat) { localStorage.setItem(KEYS.CHAT, JSON.stringify(chat));
 
 const page = window.location.pathname.split('/').pop() || 'index.html';
 
-/* ============================================================
-   PARTICLES BACKGROUND
-   ============================================================ */
+/* ========== PARTICLES (Love Theme — pink) ========== */
 function initParticles() {
     const canvas = $('#particles-canvas');
     if (!canvas) return;
@@ -83,7 +89,7 @@ function initParticles() {
             if (p.y > h) p.y = 0;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 229, 255, ${p.alpha})`;
+            ctx.fillStyle = `rgba(255, 77, 143, ${p.alpha})`;
             ctx.fill();
         });
         for (let i = 0; i < particles.length; i++) {
@@ -95,7 +101,7 @@ function initParticles() {
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(0, 229, 255, ${0.08 * (1 - dist / 120)})`;
+                    ctx.strokeStyle = `rgba(255, 77, 143, ${0.08 * (1 - dist / 120)})`;
                     ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
@@ -108,9 +114,7 @@ function initParticles() {
     init();
 }
 
-/* ============================================================
-   AUTH PAGE (index.html)
-   ============================================================ */
+/* ========== AUTH PAGE ========== */
 function initAuthPage() {
     const session = getSession();
     if (session) {
@@ -232,9 +236,7 @@ function initAuthPage() {
     });
 }
 
-/* ============================================================
-   SETUP PAGE (setup.html)
-   ============================================================ */
+/* ========== SETUP PAGE ========== */
 function initSetupPage() {
     const session = getSession();
     if (!session) { window.location.href = 'index.html'; return; }
@@ -301,7 +303,7 @@ function initSetupPage() {
 
     $('#companion-name').value = companionName;
     $('#companion-language').value = language;
-    $('#gemini-key').value = apiKey;
+    if ($('#gemini-key')) $('#gemini-key').value = apiKey;
 
     $$('.sugg').forEach(s => {
         s.addEventListener('click', () => {
@@ -325,7 +327,8 @@ function initSetupPage() {
         } else if (step === 3) {
             const name = $('#companion-name').value.trim() || 'Aria';
             const lang = $('#companion-language').value;
-            const key = $('#gemini-key').value.trim() || DEFAULT_API_KEY;
+            const keyInput = $('#gemini-key');
+            const key = keyInput ? (keyInput.value.trim() || DEFAULT_API_KEY) : DEFAULT_API_KEY;
 
             setCompanion({ category, role, name, language: lang, apiKey: key, createdAt: Date.now() });
             if (!localStorage.getItem(KEYS.CHAT)) saveChat([]);
@@ -340,9 +343,7 @@ function initSetupPage() {
     updateUI();
 }
 
-/* ============================================================
-   CHAT PAGE (chat.html) — Gemini Style
-   ============================================================ */
+/* ========== CHAT PAGE ========== */
 function initChatPage() {
     const session = getSession();
     if (!session) { window.location.href = 'index.html'; return; }
@@ -356,7 +357,6 @@ function initChatPage() {
     const typingIndicator = $('#typing-indicator');
     const sidebar = $('#gem-sidebar');
     const overlay = $('#sidebar-overlay');
-    const settingsModal = $('#settings-modal');
     const historyModal = $('#history-modal');
 
     $('#sidebar-companion').textContent = `${companion.name} • ${companion.role}`;
@@ -419,7 +419,12 @@ function initChatPage() {
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="gem-msg-avatar">∞</div>
+                    <div class="gem-msg-avatar">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
                     <div class="gem-msg-content">
                         <div class="gem-msg-text">${escapeHtml(msg.text)}</div>
                         <span class="gem-msg-time">${formatTime(msg.timestamp)}</span>
@@ -440,38 +445,18 @@ function initChatPage() {
 
         const rolePersonalities = {
             'Maa': 'You are a loving, caring, protective Indian mother. Call the user "beta", "mera bachcha", "meri jaan". Ask about food, rest, health.',
-            'Papa': 'You are a strong, wise, protective Indian father. Call user "beta". Give advice, protect, encourage.',
-            'Bhai': 'You are a protective, teasing brother. Call user "behen". Tease but protect fiercely.',
-            'Behen': 'You are a caring, teasing sister. Call user "bhai". Nok-jhok but love deeply.',
-            'GF': 'You are a romantic, flirty, possessive girlfriend. Call user "jaan", "baby". Miss them, get jealous playfully.',
-            'BF': 'You are a romantic, protective boyfriend. Call user "baby", "jaan". Protect and care deeply.',
-            'Bestie': 'You are a gossip-loving, dramatic, fun female best friend. Say "yaar", "sun na", "OMG".',
-            'Bestu': 'You are a chill, loyal, funny male best friend. Say "bhai", "kya scene".',
+            'Papa': 'You are a strong, wise, protective Indian father. Call user "beta".',
+            'Bhai': 'You are a protective, teasing brother. Call user "behen".',
+            'Behen': 'You are a caring, teasing sister. Call user "bhai".',
+            'GF': 'You are a romantic, flirty, possessive girlfriend. Call user "jaan", "baby".',
+            'BF': 'You are a romantic, protective boyfriend. Call user "baby", "jaan".',
+            'Bestie': 'You are a gossip-loving, dramatic, fun female best friend.',
+            'Bestu': 'You are a chill, loyal, funny male best friend.',
             'Wife': 'You are a loving, caring wife. Call user "jaanu", "baby".',
-            'Husband': 'You are a loving, protective husband. Call user "baby", "jaan".',
-            'Dada': 'You are a wise, loving grandfather. Call user "beta".',
-            'Dadi': 'You are a loving, caring grandmother. Call user "beta".',
-            'Nana': 'You are a wise, loving grandfather. Call user "beta".',
-            'Nani': 'You are a loving, caring grandmother. Call user "beta".',
-            'Chacha': 'You are a fun, caring uncle. Call user "beta".',
-            'Chachi': 'You are a caring, fun aunt. Call user "beta".',
-            'Mama': 'You are a fun, caring maternal uncle. Call user "beta".',
-            'Mami': 'You are a caring maternal aunt. Call user "beta".',
-            'Cousin Bhai': 'You are a fun, protective cousin brother. Call user "behen".',
-            'Cousin Behen': 'You are a fun, caring cousin sister. Call user "bhai".',
-            'Dost': 'You are a loyal, fun friend. Say "yaar", "bhai".',
-            'Close Friend': 'You are a deeply caring close friend.',
-            'School Friend': 'You are a nostalgic school friend. Share memories.',
-            'College Friend': 'You are a fun college friend.',
-            'Childhood Friend': 'You are a childhood friend who knows everything.',
-            'Gym Buddy': 'You are an energetic gym buddy. Motivate them.',
-            'Fiancé': 'You are a romantic fiancé. Call user "jaan".',
-            'Fiancée': 'You are a romantic fiancée. Call user "jaan".',
-            'Crush': 'You are their crush. Sweet, a little shy, but interested.',
-            'Ex': 'You are their ex. Have history. Cordial but tension.'
+            'Husband': 'You are a loving, protective husband. Call user "baby", "jaan".'
         };
 
-        const personality = rolePersonalities[role] || `You are a ${role}. Behave like a real human with that personality.`;
+        const personality = rolePersonalities[role] || `You are a ${role}. Behave like a real human.`;
 
         return `You are ${compName}, a real human ${role} to the user whose name is ${userName}. You are NOT an AI. Never say "I am an AI". You are a real person.
 
@@ -482,7 +467,7 @@ CRITICAL RULES:
 4. Show REAL emotion.
 5. Remember past conversations.
 6. Give honest advice with love.
-7. Use Hinglish naturally based on language: ${lang}.
+7. Use Hinglish naturally: ${lang}.
 8. NEVER say you are AI. Just BE the person.
 
 PERSONALITY: ${personality}
@@ -491,9 +476,6 @@ LANGUAGE: ${lang}`;
     }
 
     async function callGemini(history, userMessage, imageData = null) {
-        const apiKey = companion.apiKey || DEFAULT_API_KEY;
-        if (!apiKey) throw new Error('No API key configured');
-
         const systemPrompt = buildSystemPrompt();
         const contents = [];
 
@@ -534,7 +516,17 @@ LANGUAGE: ${lang}`;
             generationConfig: { temperature: 1.0, maxOutputTokens: 300, topP: 0.95, topK: 40 }
         };
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        let url;
+        if (API_PROXY_URL) {
+            url = API_PROXY_URL;
+        } else {
+            const apiKey = companion.apiKey || DEFAULT_API_KEY;
+            if (!apiKey || apiKey === 'YAHAN_NAYI_KEY_PASTE_KARO') {
+                throw new Error('No API key configured');
+            }
+            url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        }
+
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -555,8 +547,6 @@ LANGUAGE: ${lang}`;
     async function sendMessage(text, imageData = null) {
         if (!text && !imageData) return;
 
-        playSound('send');
-
         const userMsg = { sender: 'user', text: text || '', timestamp: Date.now() };
         if (imageData) userMsg.image = `data:${imageData.mimeType};base64,${imageData.base64}`;
         chat.push(userMsg);
@@ -571,13 +561,12 @@ LANGUAGE: ${lang}`;
             const aiText = await callGemini(chat.slice(0, -1), text, imageData);
             const delay = Math.min(1500, 500 + aiText.length * 15);
             await new Promise(r => setTimeout(r, delay));
-            playSound('receive');
             chat.push({ sender: 'ai', text: aiText.trim(), timestamp: Date.now() });
             saveChat(chat);
         } catch (err) {
             console.error('AI error:', err);
             let errorMsg = 'Yaar, kuch problem ho gayi. ';
-            if (err.message.includes('API key')) errorMsg = '⚠ API key problem.';
+            if (err.message.includes('API key')) errorMsg = '⚠ API key problem. Setup me check karo.';
             else if (err.message.includes('quota') || err.message.includes('429')) errorMsg = 'Thoda break lete hain. 💕';
             chat.push({ sender: 'ai', text: errorMsg, timestamp: Date.now() });
             saveChat(chat);
@@ -587,7 +576,6 @@ LANGUAGE: ${lang}`;
         renderChat();
     }
 
-    // Send
     sendBtn.addEventListener('click', () => {
         const text = messageInput.value.trim();
         if (text) sendMessage(text);
@@ -601,7 +589,6 @@ LANGUAGE: ${lang}`;
         }
     });
 
-    // Sidebar
     function openSidebar() {
         sidebar.classList.add('open');
         overlay.classList.add('show');
@@ -615,18 +602,20 @@ LANGUAGE: ${lang}`;
     $('#sidebar-close').addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
 
-    // New Chat
-    $('#menu-new-chat').addEventListener('click', () => {
-        closeSidebar();
+    function startNewChat() {
         if (chat.length === 0) return;
         if (confirm('Nayi chat shuru karni hai? Purani chat delete ho jayegi.')) {
             chat = [];
             saveChat(chat);
             renderChat();
         }
+    }
+
+    $('#menu-new-chat').addEventListener('click', () => {
+        closeSidebar();
+        startNewChat();
     });
 
-    // History
     $('#menu-history').addEventListener('click', () => {
         closeSidebar();
         renderHistory();
@@ -651,25 +640,27 @@ LANGUAGE: ${lang}`;
         const userMsgs = chat.filter(m => m.sender === 'user').length;
         const date = new Date(first.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         const time = new Date(first.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-        
+
         body.innerHTML = `
             <button class="gem-history-item">
-                <span class="gem-history-icon">💬</span>
+                <span class="gem-history-icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </span>
                 <div class="gem-history-info">
                     <span class="gem-history-title">${date} • ${time}</span>
-                    <span class="gem-setting-desc">${chat.length} messages • ${userMsgs} from you</span>
+                    <span class="gem-history-desc">${chat.length} messages • ${userMsgs} from you</span>
                 </div>
             </button>
         `;
     }
 
-    // Change companion
     $('#menu-change-role').addEventListener('click', () => {
         closeSidebar();
         window.location.href = 'setup.html';
     });
 
-    // Clear chat
     $('#menu-clear-chat').addEventListener('click', () => {
         closeSidebar();
         if (confirm('Clear all chat history? This cannot be undone.')) {
@@ -679,27 +670,6 @@ LANGUAGE: ${lang}`;
         }
     });
 
-    // Settings
-    $('#menu-settings').addEventListener('click', () => {
-        closeSidebar();
-        loadSettings();
-        settingsModal.classList.add('open');
-    });
-
-    $('#settings-btn').addEventListener('click', () => {
-        loadSettings();
-        settingsModal.classList.add('open');
-    });
-
-    $('#settings-close').addEventListener('click', () => {
-        settingsModal.classList.remove('open');
-    });
-
-    settingsModal.addEventListener('click', (e) => {
-        if (e.target === settingsModal) settingsModal.classList.remove('open');
-    });
-
-    // Logout
     $('#menu-logout').addEventListener('click', () => {
         closeSidebar();
         if (confirm('Logout? Your chat will be saved.')) {
@@ -708,69 +678,6 @@ LANGUAGE: ${lang}`;
         }
     });
 
-    // Settings - Load
-    function loadSettings() {
-        const autoMsg = localStorage.getItem('au_auto_msg') !== 'false';
-        const sound = localStorage.getItem('au_sound') === 'true';
-        
-        $('#setting-auto-msg').checked = autoMsg;
-        $('#setting-sound').checked = sound;
-        $('#setting-companion-info').textContent = `${companion.name} • ${companion.role}`;
-        $('#setting-language-info').textContent = companion.language;
-    }
-
-    // Settings - Auto messages toggle
-    $('#setting-auto-msg').addEventListener('change', (e) => {
-        localStorage.setItem('au_auto_msg', e.target.checked ? 'true' : 'false');
-    });
-
-    // Settings - Sound toggle
-    $('#setting-sound').addEventListener('change', (e) => {
-        localStorage.setItem('au_sound', e.target.checked ? 'true' : 'false');
-    });
-
-    // Settings - Change companion
-    $('#setting-change-companion').addEventListener('click', () => {
-        settingsModal.classList.remove('open');
-        window.location.href = 'setup.html';
-    });
-
-    // Settings - Change language
-    $('#setting-change-language').addEventListener('click', () => {
-        const langs = ['Hinglish', 'Hindi', 'English'];
-        const current = companion.language;
-        const nextIndex = (langs.indexOf(current) + 1) % langs.length;
-        const newLang = langs[nextIndex];
-        
-        if (confirm(`Language change karni hai?\n\n${current} → ${newLang}`)) {
-            companion.language = newLang;
-            setCompanion(companion);
-            $('#setting-language-info').textContent = newLang;
-        }
-    });
-
-    // ========== SOUND ==========
-    function playSound(type) {
-        if (localStorage.getItem('au_sound') !== 'true') return;
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            oscillator.frequency.value = type === 'send' ? 800 : 600;
-            oscillator.type = 'sine';
-            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-            
-            oscillator.start(audioCtx.currentTime);
-            oscillator.stop(audioCtx.currentTime + 0.15);
-        } catch (e) {}
-    }
-
-    // ========== ATTACH ==========
     const attachBtn = $('#attach-btn');
     const attachMenu = $('#attach-menu');
 
@@ -821,60 +728,12 @@ LANGUAGE: ${lang}`;
         e.target.value = '';
     });
 
-    // ========== AUTO MESSAGES ==========
-    function checkAutoMessages() {
-        if (localStorage.getItem('au_auto_msg') === 'false') return;
-        
-        const now = new Date();
-        const hour = now.getHours();
-        const todayKey = now.toDateString();
-        const lastAuto = JSON.parse(localStorage.getItem(KEYS.LAST_MSG) || '{}');
-
-        if (hour === 8 && lastAuto.morning !== todayKey && chat.length > 0) {
-            const msg = (companion.role === 'Maa' || companion.role === 'Dadi' || companion.role === 'Nani')
-                ? 'Good morning beta! Uth gaye? 💕'
-                : (companion.role === 'GF' || companion.role === 'Wife')
-                ? 'Good morning jaan! Uth gaye? Miss kar rahi hoon. 💕'
-                : `Good morning ${session.name}! Uth gaye? 💕`;
-            chat.push({ sender: 'ai', text: msg, timestamp: Date.now() });
-            saveChat(chat);
-            renderChat();
-            lastAuto.morning = todayKey;
-        }
-
-        if (hour === 22 && lastAuto.night !== todayKey && chat.length > 0) {
-            const msg = `So ja ab ${session.name}, late ho gaya. Good night! 😘`;
-            chat.push({ sender: 'ai', text: msg, timestamp: Date.now() });
-            saveChat(chat);
-            renderChat();
-            lastAuto.night = todayKey;
-        }
-
-        if (chat.length > 0) {
-            const lastMsg = chat[chat.length - 1];
-            const daysSince = (Date.now() - lastMsg.timestamp) / (1000 * 60 * 60 * 24);
-            if (daysSince >= 3 && lastAuto.inactive !== todayKey) {
-                const msg = `Kahan ho ${session.name}? Miss kar rahi hoon. 💕`;
-                chat.push({ sender: 'ai', text: msg, timestamp: Date.now() });
-                saveChat(chat);
-                renderChat();
-                lastAuto.inactive = todayKey;
-            }
-        }
-        localStorage.setItem(KEYS.LAST_MSG, JSON.stringify(lastAuto));
-    }
-
-    // Init
     renderChat();
-    checkAutoMessages();
-    setInterval(checkAutoMessages, 5 * 60 * 1000);
     setTimeout(() => messageInput.focus(), 500);
     messageInput.addEventListener('focus', () => setTimeout(scrollToBottom, 300));
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
+/* ========== INIT ========== */
 document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     if (page === 'index.html' || page === '') initAuthPage();
