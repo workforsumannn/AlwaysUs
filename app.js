@@ -6,6 +6,8 @@ const KEYS = {
     LAST_MSG: 'au_last_msg'
 };
 
+const DEFAULT_API_KEY = 'AQ.Ab8RN6KMSaycOmbkncVhoXTLQRO7MFVD5FOIUGlO-Gll3yk00Q';
+
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
@@ -311,7 +313,7 @@ function initSetupPage() {
         } else if (step === 3) {
             const name = $('#companion-name').value.trim() || 'Aria';
             const lang = $('#companion-language').value;
-            const key = $('#gemini-key').value.trim();
+            const key = $('#gemini-key').value.trim() || DEFAULT_API_KEY;
             if (!key) { errorEl.textContent = '⚠ Please enter your Gemini API key'; return; }
             if (key.length < 20) { errorEl.textContent = '⚠ API key looks too short'; return; }
 
@@ -459,8 +461,7 @@ Remember: You are ${compName}, a real ${role}. Be real. Be human. Be there.`;
     }
 
     async function callGemini(history, userMessage, imageData = null) {
-        const apiKey = companion.apiKey;
-        if (!apiKey) throw new Error('No API key configured. Please go to setup.');
+        const apiKey = companion.apiKey || 'AQ.Ab8RN6KMSaycOmbkncVhoXTLQRO7MFVD5FOIUGlO-Gll3yk00Q';
 
         const systemPrompt = buildSystemPrompt();
         const contents = [];
