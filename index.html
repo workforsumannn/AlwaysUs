@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UltimateMovies — Watch Movies & Web Series Online</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #0b0d10;
+    --bg-2: #14181d;
+    --bg-3: #1c2128;
+    --accent: #ff2c2c;
+    --accent-2: #ff6b35;
+    --gold: #ffb400;
+    --text: #eef2f6;
+    --text-2: #9aa5b1;
+    --text-3: #5d6775;
+    --border: #232a33;
+    --radius: 12px;
+    --shadow: 0 20px 50px -10px rgba(0,0,0,0.8);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+
+  /* ========== HEADER ========== */
+  header {
+    background: rgba(11,13,16,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .navbar {
+    display: flex; align-items: center; gap: 30px;
+    padding: 16px 0;
+  }
+
+  .logo {
+    font-size: 1.6rem; font-weight: 900;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #ff2c2c 0%, #ff6b35 50%, #ffb400 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap;
+  }
+
+  .logo i { -webkit-text-fill-color: var(--accent); font-size: 1.4rem; }
+
+  .nav-links {
+    display: flex; gap: 24px; font-size: 0.9rem;
+    font-weight: 500; color: var(--text-2);
+    flex: 1;
+  }
+
+  .nav-links a:hover { color: #fff; }
+
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 50px; padding: 8px 18px;
+    min-width: 260px;
+  }
+
+  .search-box i { color: var(--text-3); font-size: 0.9rem; }
+  .search-box input {
+    background: none; border: none; outline: none;
+    color: #fff; font-size: 0.9rem; width: 100%;
+    font-family: inherit;
+  }
+  .search-box input::placeholder { color: var(--text-3); }
+
+  .btn-login {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    padding: 9px 22px; border-radius: 50px;
+    font-weight: 600; font-size: 0.88rem;
+    border: none; cursor: pointer; color: #fff;
+    transition: transform 0.2s;
+  }
+  .btn-login:hover { transform: translateY(-1px); }
+
+  .mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.4rem; }
+
+  /* ========== HERO SLIDER ========== */
+  .hero {
+    position: relative; height: 550px;
+    background: linear-gradient(120deg, #1a0a0a 0%, #0b0d10 60%),
+                radial-gradient(circle at 80% 30%, rgba(255,44,44,0.25), transparent 60%);
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-slide {
+    position: absolute; inset: 0;
+    display: flex; align-items: center;
+    padding: 0 60px;
+    opacity: 0; transition: opacity 0.8s;
+  }
+  .hero-slide.active { opacity: 1; }
+
+  .hero-content { max-width: 600px; z-index: 2; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,44,44,0.15);
+    border: 1px solid rgba(255,44,44,0.3);
+    color: #ff6b6b;
+    padding: 6px 14px; border-radius: 40px;
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero-meta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-size: 0.85rem; color: var(--text-2);
+    margin-bottom: 18px;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+  .hero-meta .rating { color: var(--gold); font-weight: 700; }
+
+  .hero p {
+    color: var(--text-2); font-size: 0.98rem;
+    margin-bottom: 28px; max-width: 520px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    padding: 13px 32px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    border: none; cursor: pointer; color: #fff;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 30px -8px rgba(255,44,44,0.5);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px -8px rgba(255,44,44,0.7); }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    padding: 13px 28px; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem;
+    cursor: pointer; color: #fff;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+  .hero-poster {
+    position: absolute; right: 60px; top: 50%;
+    transform: translateY(-50%);
+    width: 320px; aspect-ratio: 2/3;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2a1a1a, #1a0a0a);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hero-poster::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent 60%);
+  }
+  .hero-poster-label {
+    position: absolute; bottom: 16px; left: 16px;
+    z-index: 2; font-weight: 700; font-size: 0.9rem;
+  }
+
+  .hero-dots {
+    position: absolute; bottom: 24px; left: 60px;
+    display: flex; gap: 8px; z-index: 5;
+  }
+  .hero-dots span {
+    width: 30px; height: 4px; border-radius: 4px;
+    background: rgba(255,255,255,0.2); cursor: pointer;
+    transition: background 0.3s;
+  }
+  .hero-dots span.active { background: var(--accent); }
+
+  /* ========== SECTION ========== */
+  section { padding: 50px 0; }
+
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 1.5rem; font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .section-title::before {
+    content: ''; width: 4px; height: 24px;
+    background: linear-gradient(var(--accent), var(--accent-2));
+    border-radius: 4px;
+  }
+
+  .see-all {
+    color: var(--text-2); font-size: 0.85rem;
+    font-weight: 600; display: flex; align-items: center; gap: 6px;
+  }
+  .see-all:hover { color: var(--accent); }
+
+  /* ========== MOVIE GRID ========== */
+  .movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .movie-card {
+    background: var(--bg-2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .movie-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,44,44,0.4);
+    box-shadow: 0 20px 40px -10px rgba(255,44,44,0.25);
+  }
+
+  .movie-poster {
+    aspect-ratio: 2/3;
+    background: linear-gradient(135deg, #1e242c, #14181d);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .movie-poster::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .movie-card:hover .movie-poster::after { opacity: 1; }
+
+  .movie-poster .play-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+    z-index: 2;
+  }
+  .movie-card:hover .play-overlay { opacity: 1; }
+
+  .play-overlay i {
+    width: 56px; height: 56px;
+    background: rgba(255,44,44,0.95);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.2rem;
+    box-shadow: 0 8px 30px rgba(255,44,44,0.6);
+  }
+
+  .movie-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 0.68rem; font-weight: 800;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    z-index: 3;
+  }
+  .movie-badge.hd { color: #4ade80; }
+  .movie-badge.new { color: var(--accent); }
+  .movie-badge.cam { color: var(--gold); }
+
+  .quality-badge {
+    position: absolute; bottom: 10px; right: 10px;
+    background: rgba(0,0,0,0.85);
+    padding: 3px 8px; border-radius: 4px;
+    font-size: 0.65rem; font-weight: 700;
+    color: #fff; z-index: 3;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .movie-info { padding: 12px 14px 16px; }
+
+  .movie-title {
+    font-size: 0.9rem; font-weight: 700;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+  }
+
+  .movie-meta {
+    display: flex; justify-content: space-between;
+    font-size: 0.72rem; color: var(--text-3);
+    margin-top: 6px;
+  }
+  .movie-meta .star { color: var(--gold); }
+
+  /* ========== CATEGORY PILLS ========== */
+  .category-pills {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .pill {
+    padding: 8px 18px; border-radius: 50px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    font-size: 0.83rem; font-weight: 600;
+    color: var(--text-2); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pill:hover { border-color: var(--accent); color: #fff; }
+  .pill.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent; color: #fff;
+  }
+
+  /* ========== WEB SERIES ========== */
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .series-card {
+    display: flex; gap: 14px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .series-card:hover {
+    border-color: rgba(255,44,44,0.4);
+    transform: translateX(4px);
+  }
+
+  .series-thumb {
+    width: 80px; height: 110px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1e242c, #14181d);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .series-thumb::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  }
+
+  .series-info h4 {
+    font-size: 0.92rem; font-weight: 700;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .series-info .s-meta {
+    font-size: 0.72rem; color: var(--text-3);
+    display: flex; gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .series-info p {
+    font-size: 0.78rem; color: var(--text-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ========== TOP 10 ========== */
+  .top10-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+  }
+
+  .top10-item {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .top10-rank {
+    position: absolute; bottom: -10px; left: -10px;
+    font-size: 5rem; font-weight: 900;
+    color: var(--bg);
+    -webkit-text-stroke: 3px var(--accent);
+    line-height: 1; z-index: 2;
+    font-family: 'Arial Black', sans-serif;
+  }
+
+  .top10-poster {
+    aspect-ratio: 2/3;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #1e242c, #14181d);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s;
+  }
+  .top10-item:hover .top10-poster { transform: scale(1.04); }
+
+  /* ========== CTA BANNER ========== */
+  .cta-banner {
+    background: linear-gradient(120deg, rgba(255,44,44,0.15), rgba(255,107,53,0.08));
+    border: 1px solid rgba(255,44,44,0.25);
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: 40px 0;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute; top: -50%; right: -10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,44,44,0.3), transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cta-banner h2 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    position: relative; z-index: 2;
+  }
+
+  .cta-banner p {
+    color: var(--text-2); margin-bottom: 26px;
+    max-width: 550px; margin-left: auto; margin-right: auto;
+    position: relative; z-index: 2;
+  }
+
+  .cta-banner .btn-primary { position: relative; z-index: 2; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 50px 0 30px;
+    margin-top: 40px;
+    background: var(--bg-2);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.85rem; text-transform: uppercase;
+    letter-spacing: 1px; color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .footer-col p, .footer-col a {
+    font-size: 0.85rem; color: var(--text-2);
+    display: block; margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .footer-col a:hover { color: var(--accent); }
+
+  .footer-logo {
+    font-size: 1.5rem; font-weight: 900;
+    background: linear-gradient(135deg, #ff2c2c, #ff6b35, #ffb400);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .socials {
+    display: flex; gap: 10px; margin-top: 16px;
+  }
+  .socials a {
+    width: 38px; height: 38px;
+    background: var(--bg-3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-2);
+    transition: all 0.2s;
+  }
+  .socials a:hover {
+    background: var(--accent); color: #fff;
+    transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 14px;
+    font-size: 0.8rem; color: var(--text-3);
+  }
+
+  .footer-bottom .disclaimer {
+    color: #ff6b6b; font-size: 0.75rem;
+    max-width: 600px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .hero-poster { width: 260px; right: 30px; }
+    .hero-slide { padding: 0 30px; }
+    .hero-dots { left: 30px; }
+  }
+
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .search-box { min-width: 160px; }
+    .hero-poster { display: none; }
+    .hero { height: 480px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .navbar { flex-wrap: wrap; gap: 14px; }
+    .search-box { order: 3; width: 100%; }
+    .hero { height: 520px; }
+    .hero-slide { padding: 0 20px; }
+    .hero-dots { left: 20px; }
+    .hero-btns { flex-direction: column; }
+    .hero-btns .btn-primary, .hero-btns .btn-ghost { width: 100%; justify-content: center; }
+    .movie-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+    .top10-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .top10-rank { font-size: 3.5rem; }
+    .series-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 26px; }
+    .footer-bottom { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header>
+  <div class="container">
+    <nav class="navbar">
+      <a href="#" class="logo"><i class="fas fa-film"></i> UltimateMovies</a>
+
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Movies</a>
+        <a href="#">Web Series</a>
+        <a href="#">Genres</a>
+        <a href="#">Trending</a>
+        <a href="#">Top IMDb</a>
+      </div>
+
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search movies, series...">
+      </div>
+
+      <button class="btn-login">Sign In</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ========== HERO SLIDER ========== -->
+<section class="hero" style="padding:0;">
+  <div class="hero-slide active">
+    <div class="hero-content">
+      <div class="hero-tag"><i class="fas fa-fire"></i> Trending #1 This Week</div>
+      <h1>Shadow Protocol</h1>
+      <div class="hero-meta">
+        <span class="rating"><i class="fas fa-star"></i> 8.9/10</span>
+        <span><i class="fas fa-calendar"></i> 2025</span>
+        <span><i class="fas fa-clock"></i> 2h 18m</span>
+        <span><i class="fas fa-shield-alt"></i> Action · Thriller</span>
+        <span><i class="fas fa-closed-captioning"></i> Dual Audio</span>
+      </div>
+      <p>A rogue intelligence officer must expose a conspiracy that reaches the highest levels of government — before he becomes the next target.</p>
+      <div class="hero-btns">
+        <button class="btn-primary"><i class="fas fa-play"></i> Watch Now</button>
+        <button class="btn-ghost"><i class="fas fa-download"></i> Download</button>
+      </div>
+    </div>
+    <div class="hero-poster">
+      <div class="hero-poster-label">Shadow Protocol · 2025</div>
+    </div>
+  </div>
+
+  <div class="hero-slide">
+    <div class="hero-content">
+      <div class="hero-tag"><i class="fas fa-bolt"></i> New Release</div>
+      <h1>Neon Dynasty</h1>
+      <div class="hero-meta">
+        <span class="rating"><i class="fas fa-star"></i> 8.4/10</span>
+        <span><i class="fas fa-calendar"></i> 2025</span>
+        <span><i class="fas fa-clock"></i> 2h 04m</span>
+        <span><i class="fas fa-shield-alt"></i> Sci-Fi · Drama</span>
+      </div>
+      <p>In a future ruled by corporations, one hacker discovers a secret that could rewrite reality itself.</p>
+      <div class="hero-btns">
+        <button class="btn-primary"><i class="fas fa-play"></i> Watch Now</button>
+        <button class="btn-ghost"><i class="fas fa-download"></i> Download</button>
+      </div>
+    </div>
+    <div class="hero-poster">
+      <div class="hero-poster-label">Neon Dynasty · 2025</div>
+    </div>
+  </div>
+
+  <div class="hero-slide">
+    <div class="hero-content">
+      <div class="hero-tag"><i class="fas fa-star"></i> Critically Acclaimed</div>
+      <h1>The Last Kingdom</h1>
+      <div class="hero-meta">
+        <span class="rating"><i class="fas fa-star"></i> 9.1/10</span>
+        <span><i class="fas fa-calendar"></i> 2024</span>
+        <span><i class="fas fa-clock"></i> 2h 32m</span>
+        <span><i class="fas fa-shield-alt"></i> Historical · Epic</span>
+      </div>
+      <p>An exiled warrior returns to reclaim his throne and unite a fractured kingdom against an invading empire.</p>
+      <div class="hero-btns">
+        <button class="btn-primary"><i class="fas fa-play"></i> Watch Now</button>
+        <button class="btn-ghost"><i class="fas fa-download"></i> Download</button>
+      </div>
+    </div>
+    <div class="hero-poster">
+      <div class="hero-poster-label">The Last Kingdom · 2024</div>
+    </div>
+  </div>
+
+  <div class="hero-dots">
+    <span class="active" data-slide="0"></span>
+    <span data-slide="1"></span>
+    <span data-slide="2"></span>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- ========== LATEST MOVIES ========== -->
+  <section>
+    <div class="section-head">
+      <h2 class="section-title">Latest Movies</h2>
+      <a href="#" class="see-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="category-pills">
+      <div class="pill active">All</div>
+      <div class="pill">Action</div>
+      <div class="pill">Thriller</div>
+      <div class="pill">Comedy</div>
+      <div class="pill">Horror</div>
+      <div class="pill">Sci-Fi</div>
+      <div class="pill">Romance</div>
+      <div class="pill">Drama</div>
+    </div>
+
+    <div class="movie-grid" id="movieGrid">
+      <!-- Cards injected via JS -->
+    </div>
+  </section>
+
+  <!-- ========== WEB SERIES ========== -->
+  <section>
+    <div class="section-head">
+      <h2 class="section-title">Popular Web Series</h2>
+      <a href="#" class="see-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="series-grid" id="seriesGrid">
+      <!-- Injected via JS -->
+    </div>
+  </section>
+
+  <!-- ========== TOP 10 ========== -->
+  <section>
+    <div class="section-head">
+      <h2 class="section-title">Top 10 This Week</h2>
+      <a href="#" class="see-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="top10-grid" id="top10Grid">
+      <!-- Injected via JS -->
+    </div>
+  </section>
+
+  <!-- ========== CTA BANNER ========== -->
+  <div class="cta-banner">
+    <h2>Get Unlimited Access to 50,000+ Titles</h2>
+    <p>Join millions of movie lovers. Stream in HD, download for offline, and enjoy zero ads — all in one place.</p>
+    <button class="btn-primary"><i class="fas fa-crown"></i> Upgrade to Premium</button>
+  </div>
+
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-logo">UltimateMovies</span>
+        <p>Your ultimate destination for movies and web series. Stream thousands of titles in HD quality across all your devices.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Browse</h4>
+        <a href="#">Movies</a>
+        <a href="#">Web Series</a>
+        <a href="#">Genres</a>
+        <a href="#">Trending</a>
+        <a href="#">Top IMDb</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Report Issue</a>
+        <a href="#">DMCA</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 UltimateMovies. All rights reserved.</span>
+      <span class="disclaimer">⚠️ Demo template only. This site does not host or distribute any copyrighted content.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ========== MOVIE DATA ========== */
+  const movies = [
+    { title: "Shadow Protocol", year: 2025, rating: 8.9, quality: "HD", badge: "new", genre: "Action" },
+    { title: "Neon Dynasty", year: 2025, rating: 8.4, quality: "HD", badge: "new", genre: "Sci-Fi" },
+    { title: "The Last Kingdom", year: 2024, rating: 9.1, quality: "4K", badge: "hd", genre: "Epic" },
+    { title: "Crimson Tide Rising", year: 2025, rating: 7.8, quality: "HD", badge: "new", genre: "Thriller" },
+    { title: "Silent Echo", year: 2024, rating: 8.2, quality: "HD", badge: "hd", genre: "Drama" },
+    { title: "Midnight Vault", year: 2025, rating: 7.6, quality: "CAM", badge: "cam", genre: "Heist" },
+    { title: "Broken Compass", year: 2024, rating: 8.0, quality: "HD", badge: "hd", genre: "Adventure" },
+    { title: "Ghost Frequency", year: 2025, rating: 7.9, quality: "HD", badge: "new", genre: "Horror" },
+    { title: "Steel Horizon", year: 2024, rating: 8.5, quality: "4K", badge: "hd", genre: "Action" },
+    { title: "Paper Moons", year: 2025, rating: 7.4, quality: "HD", badge: "new", genre: "Romance" },
+    { title: "The Velvet Hour", year: 2024, rating: 8.3, quality: "HD", badge: "hd", genre: "Mystery" },
+    { title: "Fracture Point", year: 2025, rating: 8.7, quality: "HD", badge: "new", genre: "Thriller" }
+  ];
+
+  const series = [
+    { title: "Dark Waters", seasons: "S2", eps: 16, rating: 8.8, desc: "A detective uncovers a web of secrets beneath a coastal town." },
+    { title: "Quantum Divide", seasons: "S1", eps: 10, rating: 9.0, desc: "Scientists race to close a rift between parallel dimensions." },
+    { title: "Empire of Ash", seasons: "S3", eps: 24, rating: 8.6, desc: "Power, betrayal, and bloodline wars in a modern dynasty." },
+    { title: "Neon Streets", seasons: "S1", eps: 12, rating: 8.2, desc: "A hacker and a cop team up to bring down a crime syndicate." },
+    { title: "Hollow Crown", seasons: "S2", eps: 18, rating: 8.9, desc: "A royal family's dark secrets surface after a sudden death." },
+    { title: "Static Mind", seasons: "S1", eps: 8, rating: 8.4, desc: "A psychologist enters the mind of a comatose serial killer." }
+  ];
+
+  /* ========== RENDER MOVIES ========== */
+  const movieGrid = document.getElementById('movieGrid');
+  movieGrid.innerHTML = movies.map(m => `
+    <div class="movie-card">
+      <div class="movie-poster">
+        <div class="movie-badge ${m.badge}">${m.badge === 'new' ? 'NEW' : m.badge === 'cam' ? 'CAM' : 'HD'}</div>
+        <div class="quality-badge">${m.quality}</div>
+        <div class="play-overlay"><i class="fas fa-play"></i></div>
+      </div>
+      <div class="movie-info">
+        <div class="movie-title">${m.title}</div>
+        <div class="movie-meta">
+          <span>${m.year}</span>
+          <span class="star"><i class="fas fa-star"></i> ${m.rating}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  /* ========== RENDER SERIES ========== */
+  const seriesGrid = document.getElementById('seriesGrid');
+  seriesGrid.innerHTML = series.map(s => `
+    <div class="series-card">
+      <div class="series-thumb"></div>
+      <div class="series-info">
+        <h4>${s.title}</h4>
+        <div class="s-meta">
+          <span>${s.seasons}</span>
+          <span>${s.eps} Episodes</span>
+          <span class="star" style="color:var(--gold)"><i class="fas fa-star"></i> ${s.rating}</span>
+        </div>
+        <p>${s.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  /* ========== RENDER TOP 10 ========== */
+  const top10 = movies.slice(0, 10);
+  const top10Grid = document.getElementById('top10Grid');
+  top10Grid.innerHTML = top10.map((m, i) => `
+    <div class="top10-item">
+      <div class="top10-rank">${i + 1}</div>
+      <div class="top10-poster">
+        <div class="movie-badge hd" style="top:8px;left:8px;">HD</div>
+      </div>
+    </div>
+  `).join('');
+
+  /* ========== HERO SLIDER ========== */
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dots span');
+  let current = 0;
+
+  function goToSlide(index) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    current = index;
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goToSlide(i));
+  });
+
+  setInterval(() => {
+    goToSlide((current + 1) % slides.length);
+  }, 5000);
+
+  /* ========== CATEGORY PILLS ========== */
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+
+  console.log('✅ UltimateMovies loaded successfully');
+</script>
+
+</body>
+</html>
